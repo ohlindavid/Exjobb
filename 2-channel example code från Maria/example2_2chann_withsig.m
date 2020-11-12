@@ -103,7 +103,7 @@ coh_th_alpha=exp(-0.002*(dist.^2)) % Reasonable approximation based on figure 7
 
 
 % Amplitude of the different mixing factors to give the corresponding separate coherence 
-% withour meas. noise solving coh_th=2*amp_H*S./((1+amp_H^2)*S); 
+% withour meas. noise solving coh_th=2*amp_H*S./((1+amp_H^2)*S);    
 
 ampH_oneoverf=(1./coh_th_oneoverf-sqrt(1./(coh_th_oneoverf).^2-1)) 
 ampH_alpha=(1./coh_th_alpha-sqrt(1./(coh_th_alpha).^2-1)) 
@@ -135,7 +135,6 @@ COH=S_12./sqrt(S_11.*S_22);
 
 figure
 subplot(121)
-
 plot([0:M-1]/N*Fs,S_11)
 axis([0 30 0 max(S_11)])
 title('Spectral density')
@@ -172,10 +171,8 @@ phasemat2=phasemat1+ones(noreal,1)*phasediff; % Phases of channel 2
 [signal1,T]=multigaussdata(N,[512],A1,[1],[4],phasemat1,Fs);
 [signal2,T]=multigaussdata(N,[512],A2,[1],[4],phasemat2,Fs);
 
-
  
 % Adding the simulated signals and the EEG-noise together with the correct SNR-factor 
-
 sim_signal1=lambda/sqrt(lambda+1)*signal1+1/sqrt(lambda+1)*total_noise1;
 sim_signal2=lambda/sqrt(lambda+1)*signal2+1/sqrt(lambda+1)*total_noise2;
 
@@ -185,4 +182,3 @@ figure
 plot([0:N-1]/Fs,[sim_signal1(:,1) sim_signal2(:,1)+5])
 xlabel('Time(s)')
 title('Corresponding signal+noise sequences of the two channels')
-
