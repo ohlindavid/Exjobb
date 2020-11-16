@@ -132,7 +132,7 @@ S_11=(1+ampH_alpha.^2)*S_alpha+(1+ampH_oneoverf.^2)*S_oneoverf+(measn_fact).^2;
 S_22=S_11;
 
 COH=S_12./sqrt(S_11.*S_22);
-
+ 
 figure
 subplot(121)
 plot([0:M-1]/N*Fs,S_11)
