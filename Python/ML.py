@@ -5,16 +5,19 @@ from MorletLayer import MorletConv
 from plots import show_loss, show_accuracy
 import matplotlib.pyplot as plt
 import os,sys
+import tensorflow.keras.backend as K
 from settings import path
 from generator import signalLoader
 labels = np.random.randint(0,2,(1,100))
 
 names = os.listdir(path())
+print("Start!")
+print(names)
 
 data_generator = signalLoader(names,labels)
 
 nchan = 1 #Antal kanaler
-L = 500 #EEG-längd per epok innan TF-analys
+L = 1024 #EEG-längd per epok innan TF-analys
 
 #Modell enligt struktur i Zhao19
 model = tensorflow.keras.Sequential()
@@ -34,10 +37,11 @@ model.compile(
     loss=losses.BinaryCrossentropy(),
     optimizer=optimizers.Adam(),
     metrics=['accuracy']
-    #run_eagerly=True
+    ,run_eagerly = True
 )
+#plot_model(model, to_file=dot_img_file, show_shapes=True)
 
-history = model.fit(data_generator,steps_per_epoch=50)
+history = model.fit(data_generator,steps_per_epoch=10,epochs=1, batch_size=1)
 
-show_loss(history)
-show_accuracy(history)
+#show_loss(history)
+#show_accuracy(history)

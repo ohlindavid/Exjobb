@@ -1,6 +1,5 @@
+who = "Oskar"
 def path():
-    who = "David"
-
     if who=="Oskar":
         return "C:/Users/Oskar/Documents/GitHub/exjobb/sim/test_sim_1ch/"
     if who=="David":
