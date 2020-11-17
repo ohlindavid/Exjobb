@@ -2,14 +2,11 @@
 __pycache__/
 *.py[cod]
 *$py.class
+settings.py
 
 # C extensions
 *.so
 
-Python/settings.py
-
-# My Files
-Python/settings.py
 # Distribution / packaging
 .Python
 build/
