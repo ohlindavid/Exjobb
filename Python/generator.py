@@ -3,6 +3,7 @@ from settings import path
 
 def signalLoader(files,labels,batch_size=1):
     L = len(files)
+    labels= np.transpose(labels)
     while True:
         batch_start = 0
         batch_end = batch_size
@@ -20,6 +21,6 @@ def methodToLoad(files):
     train_0 = []
     aim_folder_path = path()
     for imID in files:
-        train_0.append(np.loadtxt(aim_folder_path+str(imID)))
-    train_0 = np.vstack(train_0)
+        train_0.append(np.loadtxt(aim_folder_path+imID))
+        train_0 = np.vstack(train_0)
     return train_0

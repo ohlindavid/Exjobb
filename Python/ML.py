@@ -9,11 +9,7 @@ import tensorflow.keras.backend as K
 from settings import path
 from generator import signalLoader
 labels = np.random.randint(0,2,(1,100))
-
 names = os.listdir(path())
-print("Start!")
-print(names)
-
 data_generator = signalLoader(names,labels)
 
 nchan = 1 #Antal kanaler
@@ -41,7 +37,8 @@ model.compile(
 )
 #plot_model(model, to_file=dot_img_file, show_shapes=True)
 
-history = model.fit(data_generator,steps_per_epoch=10,epochs=1, batch_size=1)
+history = model.fit(data_generator,steps_per_epoch=20,epochs=4)
+
 
 #show_loss(history)
 #show_accuracy(history)
