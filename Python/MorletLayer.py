@@ -13,14 +13,22 @@ class MorletConv(keras.layers.Layer):
         self.etas = 25 #Antal fönster
         self.wtime = 0.36 #Fönsterbredd i tid
 
-        self.a = self.add_weight(shape=([self.etas]), initializer=keras.initializers.RandomNormal(mean=0.0, stddev=50.0), trainable=True)
-        self.b = self.add_weight(shape=([self.etas]), initializer=keras.initializers.RandomNormal(mean=0.0, stddev=50.0), trainable=True)
+        self.a = self.add_weight(shape=(self.etas,1), initializer=keras.initializers.RandomNormal(mean=0.0, stddev=50.0), trainable=True)
+        self.b = self.add_weight(shape=(self.etas,1), initializer=keras.initializers.RandomNormal(mean=0.0, stddev=50.0), trainable=True)
+        print(self.a)
 
     def call(self, inputs):
+        print("Check 1")
         output = np.zeros((self.ttot - (self.wlen - 1), self.etas, self.chans))
+        print("Check 2")
         for eta in range(self.etas):
-            morlet = lambda t: math.exp(-(self.a[eta]**2)*(t**2)/2)*math.cos(2*math.pi*self.b[eta]*t)
+            morlet = lambda t: math.exp(-(self.a.numpy()[eta]**2)*(t**2)/2)*math.cos(2*math.pi*self.b.numpy()[eta]*t)
+            print(self.a)
+            print("Check Morlet")
             window = list(map(morlet, np.linspace(-1,1,self.wlen)*self.wtime))
+            print("Check Window")
             for chan in range(self.chans):
                 output[:,eta,chan] = np.convolve(inputs[:,1], window)
+                print("Check Convolve")
+        print("Check Final")
         return output

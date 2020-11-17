@@ -33,6 +33,7 @@ model.compile(
     loss=losses.BinaryCrossentropy(),
     optimizer=optimizers.Adam(),
     metrics=['accuracy']
+    #run_eagerly=True
 )
 
 history = model.fit(data_generator,steps_per_epoch=50)
