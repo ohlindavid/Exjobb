@@ -4,18 +4,16 @@ from tensorflow.keras import layers, optimizers, losses
 from MorletLayer import MorletConv
 from plots import show_loss, show_accuracy
 import matplotlib.pyplot as plt
+import os,sys
+from generator import signalLoader
 
-for i, file in enumerate(files):
-    data[i] = file
+labels = np.random.randint(0,2,(1,100))
 
-
-
-"C:/Users/david/Documents/GitHub/exjobb/sim/test_sim_1ch"
+names = os.listdir("C:/Users/david/Documents/GitHub/exjobb/sim/test_sim_1ch")
+data_generator = signalLoader(names,labels)
 
 nchan = 1 #Antal kanaler
 L = 500 #EEG-längd per epok innan TF-analys
-
-#labels = np.random.randint(0,2,(1,100))
 
 #Modell enligt struktur i Zhao19
 model = tensorflow.keras.Sequential()
@@ -37,7 +35,7 @@ model.compile(
     metrics=['accuracy']
 )
 
-history = model.fit_generator(train_generator)
+history = model.fit(data_generator,steps_per_epoch=50)
 
 show_loss(history)
 show_accuracy(history)
