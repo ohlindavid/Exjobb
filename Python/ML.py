@@ -10,6 +10,7 @@ from settings import path
 from generator import signalLoader
 labels = np.random.randint(0,2,(1,100))
 names = os.listdir(path())
+print(names)
 data_generator = signalLoader(names,labels)
 
 nchan = 1 #Antal kanaler
