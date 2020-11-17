@@ -1,28 +1,30 @@
-import tensorflow as tf
-from tensorflow import keras
+import tensorflow
 import numpy as np
-from keras import layers, models, optimizers, losses
-import MorletConv
-import show_loss, show_accuracy
-from keras.preprocessing.image import ImageDataGenerator
+from tensorflow.keras import layers, optimizers, losses
+from MorletLayer import MorletConv
+from plots import show_loss, show_accuracy
 import matplotlib.pyplot as plt
 
-print("hejhej")
+for i, file in enumerate(files):
+    data[i] = file
+
+
+
+"C:/Users/david/Documents/GitHub/exjobb/sim/test_sim_1ch"
 
 nchan = 1 #Antal kanaler
 L = 500 #EEG-längd per epok innan TF-analys
 
-#labels = np.random.randint(0,2,(1,100)) #Behövs ej med flow
-train_generator = ImageDataGenerator().flow_from_directory("../2-channel example code från Maria/test_sim_1ch")
+#labels = np.random.randint(0,2,(1,100))
 
 #Modell enligt struktur i Zhao19
-model = models.Sequential()
+model = tensorflow.keras.Sequential()
 
 #TF-lager
 model.add(MorletConv([L,nchan]))
 
 #Spatial faltning?
-model.add(layers.Conv2D(kernel_size=[nchan,1], activation='elu')) #kernel_size specificerar spatial faltning enligt Zhao19
+model.add(layers.Conv2D(filters=1, kernel_size=[nchan,1], activation='elu')) #kernel_size specificerar spatial faltning enligt Zhao19
 
 #Resten av nätverket
 model.add(layers.AveragePooling2D())
@@ -35,7 +37,7 @@ model.compile(
     metrics=['accuracy']
 )
 
-history = model.fit(data, labels)
+history = model.fit_generator(train_generator)
 
 show_loss(history)
 show_accuracy(history)

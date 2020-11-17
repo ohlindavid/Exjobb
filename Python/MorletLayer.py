@@ -11,8 +11,8 @@ class MorletConv(keras.layers.Layer):
         self.wlen = 25 #Fönsterbredd, från Zhao19
         self.etas = 25 #Antal fönster
 
-        self.a = self.add_weight(shape=(self.etas), initializer=keras.initializers.RandomNormal(mean=0.0, stddev=50.0), trainable=True)
-        self.b = self.add_weight(shape=(self.etas), initializer=keras.initializers.RandomNormal(mean=0.0, stddev=50.0), trainable=True)
+        self.a = self.add_weight(shape=([self.etas]), initializer=keras.initializers.RandomNormal(mean=0.0, stddev=50.0), trainable=True)
+        self.b = self.add_weight(shape=([self.etas]), initializer=keras.initializers.RandomNormal(mean=0.0, stddev=50.0), trainable=True)
 
     def call(self, inputs):
         output = np.zeros(self.ttot - (self.wlen - 1), self.etas, self.chans)
