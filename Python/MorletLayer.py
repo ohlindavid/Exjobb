@@ -19,11 +19,11 @@ class MorletConv(keras.layers.Layer):
 
     def call(self, inputs):
         print("Check 1")
+        print(self.a)
         output = np.zeros((self.ttot - (self.wlen - 1), self.etas, self.chans))
         print("Check 2")
         for eta in range(self.etas):
             morlet = lambda t: math.exp(-(self.a.numpy()[eta]**2)*(t**2)/2)*math.cos(2*math.pi*self.b.numpy()[eta]*t)
-            print(self.a)
             print("Check Morlet")
             window = list(map(morlet, np.linspace(-1,1,self.wlen)*self.wtime))
             print("Check Window")
