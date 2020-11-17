@@ -40,5 +40,5 @@ model.compile(
 history = model.fit(data_generator,steps_per_epoch=20,epochs=4)
 
 
-#show_loss(history)
-#show_accuracy(history)
+show_loss(history)
+show_accuracy(history)
