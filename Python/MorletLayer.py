@@ -13,18 +13,16 @@ class MorletConv(keras.layers.Layer):
         self.etas = 25 #Antal fönster
         self.wtime = 0.36 #Fönsterbredd i tid
 
-        self.a = self.add_weight(shape=(self.etas,1), initializer=keras.initializers.RandomNormal(mean=0.0, stddev=50.0), trainable=True)
-        self.b = self.add_weight(shape=(self.etas,1), initializer=keras.initializers.RandomNormal(mean=0.0, stddev=50.0), trainable=True)
+        self.a = self.add_weight(name='a', shape=(self.etas,1), initializer=keras.initializers.RandomNormal(mean=0.0, stddev=50.0), trainable=True)
+        self.b = self.add_weight(name='b', shape=(self.etas,1), initializer=keras.initializers.RandomNormal(mean=0.0, stddev=50.0), trainable=True)
 
     def call(self, inputs):
-        print("Check 1")
         output = np.zeros((self.ttot - (self.wlen - 1), self.etas, self.chans))
         for eta in range(self.etas):
             morlet = lambda t: math.exp(-(self.a.numpy()[eta]**2)*(t**2)/2)*math.cos(2*math.pi*self.b.numpy()[eta]*t)
             window = list(map(morlet, np.linspace(-1,1,self.wlen)*self.wtime))
             for chan in range(self.chans):
                 output[:,eta,chan] = np.convolve(inputs[0,:], window, mode='valid')
-        print("Check Final")
         output = tf.convert_to_tensor(output)
         output = tf.expand_dims(output, 0)
         return output
