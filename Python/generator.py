@@ -1,4 +1,5 @@
 import numpy as np
+import settings
 
 def signalLoader(files,labels,batch_size=1):
     L = len(files)
@@ -16,7 +17,10 @@ def signalLoader(files,labels,batch_size=1):
 
 def methodToLoad(files):
     train_0 = []
-    aim_folder_path = "C:/Users/david/Documents/GitHub/exjobb/sim/test_sim_1ch/"
+    if who=="Oskar":
+        aim_folder_path = "C:/Users/Oskar/Documents/GitHub/exjobb/sim/test_sim_1ch/"
+    else if who=="David"
+        aim_folder_path =
 
     for imID in files:
         train_0.append(np.loadtxt(aim_folder_path+str(imID)))

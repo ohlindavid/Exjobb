@@ -5,11 +5,14 @@ from MorletLayer import MorletConv
 from plots import show_loss, show_accuracy
 import matplotlib.pyplot as plt
 import os,sys
+import settings
 from generator import signalLoader
-
 labels = np.random.randint(0,2,(1,100))
 
-names = os.listdir("C:/Users/david/Documents/GitHub/exjobb/sim/test_sim_1ch")
+if who=="Oskar":
+    names = os.listdir("C:/Users/Oskar/Documents/GitHub/exjobb/sim/test_sim_1ch")
+else if who=="David"
+    names = "Lägg till!"
 data_generator = signalLoader(names,labels)
 
 nchan = 1 #Antal kanaler
