@@ -30,5 +30,8 @@ class MorletConv(keras.layers.Layer):
 """
 
     def call(self, inputs):
-        twin = tf.tile(tf.expand_dims(tf.map_fn(lambda t: tf.math.exp(-(tf.math.pow(self.a,2))*(tf.math.pow(t,2))/2)*tf.math.cos(tf.constant(2*math.pi)*self.b*t), tf.constant(np.linspace(-0.18,0.18,25,dtype='float32'))), -1), tf.constant([1,1,60]))
-        
+        morlet = lambda t: tf.math.exp(-(tf.math.pow(self.a,2))*(tf.math.pow(t,2))/2)*tf.math.cos(tf.constant(2*math.pi)*self.b*t)
+        win = tf.constant(np.linspace(-self.wtime/2,self.wtime/2,self.wlen,dtype='float32'))
+        twin = tf.tile(tf.expand_dims(tf.map_fn(morlet, win), axis=-1), tf.constant([1,1,self.nchan]))
+        tinput = tf.tile(tf.expand_dims(inputs, axis=1), tf.constant([1,self.etas,1]))
+        tf.nn.convolution(inputs, twin, padding='VALID')
