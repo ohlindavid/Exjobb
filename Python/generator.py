@@ -3,7 +3,6 @@ from settings import path
 
 def signalLoader(files,labels,batch_size=1):
     L = len(files)
-    print(L)
     labels= np.transpose(labels)
     while True:
         batch_start = 0
@@ -13,7 +12,6 @@ def signalLoader(files,labels,batch_size=1):
             X = methodToLoad(files[batch_start:limit])
             Y = labels[batch_start:limit]
             Y = np.vstack(Y)
-            print(X,Y)
             yield (X,Y) #a tuple with two numpy arrays with batch_size samples
             batch_start += batch_size
             batch_end += batch_size

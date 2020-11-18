@@ -12,7 +12,6 @@ labels = np.zeros((1,100))
 labels2 = np.ones((1,100))
 labels = np.append(labels,labels2)
 names = os.listdir(path())
-print(labels)
 data_generator = signalLoader(names,labels)
 
 nchan = 1 #Antal kanaler
