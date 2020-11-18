@@ -16,27 +16,17 @@ class MorletConv(keras.layers.Layer):
         self.a = self.add_weight(name='a', shape=(self.etas,1), initializer=keras.initializers.RandomNormal(mean=0.0, stddev=10.0), trainable=True)
         self.b = self.add_weight(name='b', shape=(self.etas,1), initializer=keras.initializers.RandomNormal(mean=0.0, stddev=10.0), trainable=True)
 
-#GAMMAL
-
-
     def call(self, inputs):
         morlet = lambda t: tf.math.exp(-(tf.math.pow(self.a,2))*(tf.math.pow(t,2))/2)*tf.math.cos(tf.constant(2*math.pi)*self.b*t)
         win = tf.constant(np.linspace(-self.wtime/2,self.wtime/2,self.wlen,dtype='float32'))
         twin = tf.tile(tf.map_fn(morlet, win), tf.constant([1,1,self.nchan]))
         tinput = tf.tile(tf.expand_dims(np.transpose(inputs), axis=1), tf.constant([1,self.etas,1]))
+        tinput = tf.expand_dims(tinput,axis=0)
+#        tinput = tf.expand_dims(tinput,axis=-1)
+#        twin = tf.expand_dims(twin, axis=-1)
+        twin = tf.expand_dims(twin, axis=-1)
         print(tf.shape(twin))
         print(tf.shape(tinput))
-        tf.nn.convolution(tinput,twin, padding='VALID',data_format='NCW')
-        return
-
-"""
-    def call(self, inputs):
-        output = np.zeros((self.ttot - (self.wlen - 1), self.etas, self.chans))
-        for eta in range(self.etas):
-            morlet = lambda t: tf.math.exp(-(tf.math.pow(self.a[eta],2))*(tf.math.pow(t,2))/2)*tf.math.cos(tf.constant(2*math.pi)*self.b[eta]*t)
-            window = tf.map_fn(morlet, tf.constant(np.linspace(-1,1,self.wlen)*self.wtime))
-            for chan in range(self.chans):
-                output[:,eta,chan] = tf.nn.convolution(tf.constant(inputs[0,:]), window, padding='VALID')
-        output = tf.expand_dims(output, 0)
+        output = tf.nn.convolution(tinput,twin, padding='VALID')
+        print(tf.shape(output))
         return output
-"""
