@@ -7,7 +7,7 @@ import math
 class MorletConv(keras.layers.Layer):
     def __init__(self, input_dim):
         super(MorletConv, self).__init__()
-        self.chans = input_dim[1] #Antal kanaler
+        self.nchan = input_dim[1] #Antal kanaler
         self.ttot = input_dim[0] #Tiden per trial
         self.wlen = 25 #Fönsterbredd i samples, från Zhao19
         self.etas = 25 #Antal fönster
@@ -34,4 +34,4 @@ class MorletConv(keras.layers.Layer):
         win = tf.constant(np.linspace(-self.wtime/2,self.wtime/2,self.wlen,dtype='float32'))
         twin = tf.tile(tf.expand_dims(tf.map_fn(morlet, win), axis=-1), tf.constant([1,1,self.nchan]))
         tinput = tf.tile(tf.expand_dims(inputs, axis=1), tf.constant([1,self.etas,1]))
-        tf.nn.convolution(inputs, twin, padding='VALID')
+        return tf.nn.convolution(tinput, twin, padding='VALID')

@@ -36,7 +36,7 @@ model.compile(
     loss=losses.BinaryCrossentropy(),
     optimizer=optimizers.Adam(),
     metrics=['accuracy'],
-    srun_eagerly = True
+    run_eagerly = True
 )
 #plot_model(model, to_file=dot_img_file, show_shapes=True)
 
