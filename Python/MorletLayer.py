@@ -22,10 +22,11 @@ class MorletConv(keras.layers.Layer):
     def call(self, inputs):
         morlet = lambda t: tf.math.exp(-(tf.math.pow(self.a,2))*(tf.math.pow(t,2))/2)*tf.math.cos(tf.constant(2*math.pi)*self.b*t)
         win = tf.constant(np.linspace(-self.wtime/2,self.wtime/2,self.wlen,dtype='float32'))
-        print(tf.map_fn(morlet, win))
         twin = tf.tile(tf.map_fn(morlet, win), tf.constant([1,1,self.nchan]))
-        tinput = tf.tile(tf.expand_dims(inputs, axis=1), tf.constant([1,self.etas,1]))
-        tf.nn.convolution(tinput, twin, padding='VALID')
+        tinput = tf.tile(tf.expand_dims(np.transpose(inputs), axis=1), tf.constant([1,self.etas,1]))
+        print(tf.shape(twin))
+        print(tf.shape(tinput))
+        tf.nn.convolution(tinput,twin, padding='VALID',data_format='NCW')
         return
 
 """
