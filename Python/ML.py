@@ -8,8 +8,11 @@ import os,sys
 import tensorflow.keras.backend as K
 from settings import path
 from generator import signalLoader
-labels = np.random.randint(0,2,(1,100))
+labels = np.zeros((1,100))
+labels2 = np.ones((1,100))
+labels = np.append(labels,labels2)
 names = os.listdir(path())
+print(labels)
 data_generator = signalLoader(names,labels)
 
 nchan = 1 #Antal kanaler
@@ -40,5 +43,5 @@ model.compile(
 history = model.fit(data_generator,steps_per_epoch=20,epochs=4)
 
 
-#show_loss(history)
-#show_accuracy(history)
+show_loss(history)
+show_accuracy(history)
