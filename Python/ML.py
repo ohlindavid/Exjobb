@@ -12,6 +12,13 @@ labels = np.zeros((1,100))
 labels2 = np.ones((1,100))
 labels = np.append(labels,labels2)
 names = os.listdir(path())
+labelsnames = np.concatenate([[names],[labels]],0)
+labelsnames = np.transpose(labelsnames)
+np.random.shuffle(labelsnames)
+labelsnames = np.transpose(labelsnames)
+names = labelsnames[0,:]
+labels = labelsnames[1,:]
+labels = labels.astype(np.float)
 data_generator = signalLoader(names,labels)
 
 nchan = 1 #Antal kanaler
@@ -32,13 +39,13 @@ model.add(layers.Dropout(0.75))
 model.add(layers.Dense(2, activation='softmax')) #2
 model.compile(
     loss=losses.BinaryCrossentropy(),
-    optimizer=optimizers.Adam(),
+    optimizer=optimizers.SGD(learning_rate=0.0000001),
     metrics=['accuracy'],
     run_eagerly = True
 )
 
-history = model.fit(data_generator,steps_per_epoch=50,epochs=10)
+history = model.fit(data_generator,steps_per_epoch=100,epochs=30)
 model.summary()
 
-show_loss(history)
+#show_loss(history)
 #show_accuracy(history)
