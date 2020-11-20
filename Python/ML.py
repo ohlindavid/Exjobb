@@ -21,6 +21,13 @@ labels = labelsnames[1,:]
 labels = labels.astype(np.float)
 data_generator = signalLoader(names,labels)
 
+testplot = np.loadtxt(path() + 'sim_test_1ch_7')
+fig = plt.figure(1)
+plt.plot(testplot)
+fig.show()
+plt.savefig("test")
+print(testplot)
+
 nchan = 1 #Antal kanaler
 L = 1024 #EEG-längd per epok innan TF-analys
 
@@ -31,10 +38,10 @@ model.add(layers.InputLayer((L,nchan),batch_size=1))
 #model.add(Input(shape=(1000,nchan)))
 model.add(MorletConv([L,nchan]))
 #Spatial faltning?
-model.add(layers.Conv2D(filters=1, kernel_size=[1,nchan], activation='elu')) #kernel_size specificerar spatial faltning enligt Zhao19
-model.add(layers.Permute((1,2,3)))
+model.add(layers.Conv2D(filters=25, kernel_size=[1,nchan], activation='elu')) #kernel_size specificerar spatial faltning enligt Zhao19
+model.add(layers.Permute((3,2,1)))
 #Resten av nätverket
-model.add(layers.AveragePooling2D(pool_size=(1, 17), strides=(1,30),data_format='channels_last'))
+model.add(layers.AveragePooling2D(pool_size=(1, 71), strides=(1,15),data_format='channels_last'))
 model.add(layers.Dropout(0.75))
 model.add(layers.Flatten())
 model.add(layers.Dense(1, activation='softmax'))
@@ -45,7 +52,7 @@ model.compile(
     run_eagerly = True
 )
 
-history = model.fit(data_generator,steps_per_epoch=1,epochs=1)
+history = model.fit(data_generator,steps_per_epoch=200,epochs=1)
 model.summary()
 
 #show_loss(history)

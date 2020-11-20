@@ -1,6 +1,6 @@
 import tensorflow as tf
 from tensorflow import keras
-from tensorflow.keras import layers
+from tensorflow.keras import layers, backend
 import numpy as np
 import math
 from matplotlib import pyplot as plt
@@ -32,7 +32,8 @@ class MorletConv(keras.layers.Layer):
             newoutput = tf.nn.convolution(tinput,twin, padding='VALID')
             newoutput = tf.expand_dims(newoutput,axis=2)
             output = tf.concat([output,newoutput],2)
-        output = tf.transpose(output,[0,2,1,3])
+        output = tf.transpose(output,[0,3,1,2])
         #plt.plot(tf.make_ndarray(tf.make_tensor_proto(output))[0,:,:,0])
-        print(output.eval())
+        #print(output.eval())
+        #tf.io.write_file('tensorCheck', tf.strings.join(tf.keras.backend.flatten(tf.strings.as_string(output))), name=None)
         return output
