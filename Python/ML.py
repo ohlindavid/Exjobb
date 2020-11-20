@@ -32,20 +32,20 @@ model.add(layers.InputLayer((L,nchan),batch_size=1))
 model.add(MorletConv([L,nchan]))
 #Spatial faltning?
 model.add(layers.Conv2D(filters=1, kernel_size=[1,nchan], activation='elu')) #kernel_size specificerar spatial faltning enligt Zhao19
-model.add(layers.Permute((3,2,1)))
+model.add(layers.Permute((1,2,3)))
 #Resten av nätverket
-model.add(layers.AveragePooling2D(pool_size=(1, 71), strides=(1,30)))
+model.add(layers.AveragePooling2D(pool_size=(1, 17), strides=(1,30),data_format='channels_last'))
 model.add(layers.Dropout(0.75))
 model.add(layers.Flatten())
 model.add(layers.Dense(1, activation='softmax'))
 model.compile(
-    loss='binary_crossentropy',
+    loss=losses.BinaryCrossentropy(),
     optimizer=optimizers.Adam(),
     metrics=['accuracy'],
     run_eagerly = True
 )
 
-history = model.fit(data_generator,steps_per_epoch=50,epochs=4)
+history = model.fit(data_generator,steps_per_epoch=1,epochs=1)
 model.summary()
 
 #show_loss(history)

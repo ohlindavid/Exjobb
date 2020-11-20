@@ -3,6 +3,7 @@ from tensorflow import keras
 from tensorflow.keras import layers
 import numpy as np
 import math
+from matplotlib import pyplot as plt
 
 class MorletConv(keras.layers.Layer):
     def __init__(self, input_dim,input_shape=[1024,25,1]):
@@ -22,10 +23,7 @@ class MorletConv(keras.layers.Layer):
         mwin = tf.map_fn(morlet, win)
         twin = tf.slice(mwin,[0,0,0],[25,1,1])
         twin = tf.tile(twin, tf.constant([1,1,self.nchan]))
-        print(tf.shape(inputs))
-#        tinput = tf.transpose(inputs,perm=[])
         tinput = tf.transpose(inputs,perm=[0,1,2])
-        #tinput = tf.expand_dims(tinput,axis=0)
         output = tf.nn.convolution(tinput,twin, padding='VALID')
         output = tf.expand_dims(output,axis=2)
         for i in range(1,self.etas):
@@ -35,4 +33,6 @@ class MorletConv(keras.layers.Layer):
             newoutput = tf.expand_dims(newoutput,axis=2)
             output = tf.concat([output,newoutput],2)
         output = tf.transpose(output,[0,2,1,3])
+        #plt.plot(tf.make_ndarray(tf.make_tensor_proto(output))[0,:,:,0])
+        print(output.eval())
         return output
