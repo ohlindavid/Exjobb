@@ -1,6 +1,6 @@
 import tensorflow
 import numpy as np
-from tensorflow.keras import layers, optimizers, losses
+from tensorflow.keras import layers, optimizers, losses, Input
 from MorletLayer import MorletConv
 from plots import show_loss, show_accuracy
 import matplotlib.pyplot as plt
@@ -26,25 +26,26 @@ L = 1024 #EEG-längd per epok innan TF-analys
 
 #Modell enligt struktur i Zhao19
 model = tensorflow.keras.Sequential()
-
+model.add(layers.InputLayer((L,nchan),batch_size=1))
 #TF-lager
+#model.add(Input(shape=(1000,nchan)))
 model.add(MorletConv([L,nchan]))
-
 #Spatial faltning?
-model.add(layers.Conv2D(filters=1, kernel_size=[nchan,1], activation='elu')) #kernel_size specificerar spatial faltning enligt Zhao19
-
+model.add(layers.Conv2D(filters=1, kernel_size=[1,nchan], activation='elu')) #kernel_size specificerar spatial faltning enligt Zhao19
+model.add(layers.Permute((3,2,1)))
 #Resten av nätverket
-model.add(layers.AveragePooling2D())
+model.add(layers.AveragePooling2D(pool_size=(1, 71), strides=(1,30)))
 model.add(layers.Dropout(0.75))
-model.add(layers.Dense(2, activation='softmax')) #2
+model.add(layers.Flatten())
+model.add(layers.Dense(1, activation='softmax'))
 model.compile(
-    loss=losses.BinaryCrossentropy(),
-    optimizer=optimizers.SGD(learning_rate=0.0000001),
+    loss='binary_crossentropy',
+    optimizer=optimizers.Adam(),
     metrics=['accuracy'],
     run_eagerly = True
 )
 
-history = model.fit(data_generator,steps_per_epoch=100,epochs=30)
+history = model.fit(data_generator,steps_per_epoch=50,epochs=4)
 model.summary()
 
 #show_loss(history)
