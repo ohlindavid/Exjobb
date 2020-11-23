@@ -42,7 +42,7 @@ for j=1:100
     % Simulate measurement noise
     measurement_noise = randn(N,E);
 
-
+    % Define and calc Coherence between channels of different noises.
     Coh_oof = exp(-0.01*(dMatrix.^2));
     Coh_alpha = exp(-0.002*(dMatrix.^2));
 
@@ -51,9 +51,14 @@ for j=1:100
 
 
     in = linspace(0,time,N);
-    in = exp(-2*in).*sin(8*in+2) + exp(-in).*sin(2*in) - 5*sin(2*in-pi).*exp(-2*in);
+    for i=1:5
+        z = 0.1*rand();
+     %   in2(:,i) =  exp(-1/5*in).*sin(3*in+2+z) + exp(-10*in).*sin(10*in) - 5*sin(12*in-pi/5+z).*exp(-2*in);
+        in2(:,i) = exp(-2*in).*sin(8*in+2) + exp(-in).*sin(2*in+z) - 5*sin(2*in-pi/0.8+z).*exp(-2*in);
+    end
+    in = in2;
     SNR=20;
     lambda=10^(SNR/10);
-    out = sqrt(lambda/(lambda+1)).*in'./norm(in)+1/sqrt(lambda+1)*tot_noise(:,1)/norm(tot_noise(:,1));
-    csvwrite('sim_test_1ch_' + string(j),out)
+    out = sqrt(lambda/(lambda+1)).*in./norm(in)+1/sqrt(lambda+1)*tot_noise(:,5)/norm(tot_noise(:,5));
+    csvwrite('sim_test_2ch_' + string(j),out)
 end
