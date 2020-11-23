@@ -14,8 +14,8 @@ class MorletConv(keras.layers.Layer):
         self.etas = 25 #Antal fönster
         self.wtime = 0.36 #Fönsterbredd i tid
 
-        self.a = self.add_weight(name='a', shape=(self.etas,1), initializer=keras.initializers.RandomNormal(mean=0.0, stddev=10.0), trainable=True)
-        self.b = self.add_weight(name='b', shape=(self.etas,1), initializer=keras.initializers.RandomNormal(mean=0.0, stddev=10.0), trainable=True)
+        self.a = self.add_weight(name='a', shape=(self.etas,1), initializer=keras.initializers.RandomNormal(mean=0.0, stddev=10.0,seed=1), trainable=True)
+        self.b = self.add_weight(name='b', shape=(self.etas,1), initializer=keras.initializers.RandomNormal(mean=0.0, stddev=10.0,seed=1), trainable=True)
 
     def call(self, inputs):
         morlet = lambda t: tf.math.exp(-(tf.math.pow(self.a,2))*(tf.math.pow(t,2))/2)*tf.math.cos(tf.constant(2*math.pi)*self.b*t)
@@ -33,7 +33,4 @@ class MorletConv(keras.layers.Layer):
             newoutput = tf.expand_dims(newoutput,axis=2)
             output = tf.concat([output,newoutput],2)
         output = tf.transpose(output,[0,3,1,2])
-        #plt.plot(tf.make_ndarray(tf.make_tensor_proto(output))[0,:,:,0])
-        #print(output.eval())
-        #tf.io.write_file('tensorCheck', tf.strings.join(tf.keras.backend.flatten(tf.strings.as_string(output))), name=None)
         return output
