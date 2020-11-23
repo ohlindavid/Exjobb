@@ -8,6 +8,7 @@ import os,sys
 import tensorflow.keras.backend as K
 from settings import path
 from generator import signalLoader
+
 labels = np.zeros((1,100))
 labels2 = np.ones((1,100))
 labels = np.append(labels,labels2)
@@ -54,8 +55,15 @@ model.compile(
     run_eagerly = True
 )
 
-history = model.fit(data_generator,steps_per_epoch=200,epochs=3)
+history = model.fit(data_generator,steps_per_epoch=200,epochs=1)
 model.summary()
+
+weight = [v for v in model.trainable_variables if v.name == "b:0"][0]
+print(weight)
+
+hist = plt.hist(np.absolute(weight.numpy()), bins=10, range=(0,40))
+plt.show()
+#np.histogram(weight.numpy(), bins=10, range=(0,40))
 
 #show_loss(history)
 #show_accuracy(history)
@@ -63,7 +71,6 @@ model.summary()
 t  = tensorflow.constant([testplot])
 t = tensorflow.expand_dims(t,axis=0)
 t = tensorflow.transpose(t,[0,2,1])
-print(t)
 o = MorletConv([L,nchan]).apply(t)
 fig = plt.figure(1)
 plt.imshow(o[0,0,:,:])
