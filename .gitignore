@@ -2,7 +2,7 @@
 __pycache__/
 *.py[cod]
 *$py.class
-settings.py
+*settings.py
 
 # C extensions
 *.so
@@ -128,5 +128,7 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+Python/settings.py
+Python/settings.py
 Python/settings.py
 Python/settings.py
