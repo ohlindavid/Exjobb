@@ -1,7 +1,7 @@
 import numpy as np
 from settings import path
 
-def signalLoader(files,labels,batch_size=1):
+def signalLoader(nchan,files,labels,batch_size=1):
     L = len(files)
     labels= np.transpose(labels)
     while True:
@@ -13,7 +13,10 @@ def signalLoader(files,labels,batch_size=1):
             Y = labels[batch_start:limit]
             Y = np.vstack(Y)
             #print(files[batch_start:limit],Y)
-            yield (X,Y) #a tuple with two numpy arrays with batch_size samples
+            if (nchan > 1):
+                yield (np.expand_dims(X,axis=0),Y) #a tuple with two numpy arrays with batch_size samples
+            else:
+                yield (X,Y)
             batch_start += batch_size
             batch_end += batch_size
 
@@ -21,6 +24,6 @@ def methodToLoad(files):
     train_0 = []
     aim_folder_path = path()
     for imID in files:
-        train_0.append(np.loadtxt(aim_folder_path+imID))
+        train_0.append(np.loadtxt(aim_folder_path+imID,delimiter=','))
         train_0 = np.vstack(train_0)
     return train_0
