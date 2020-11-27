@@ -58,8 +58,8 @@ model.compile(
 history = model.fit(data_generator,steps_per_epoch=200,epochs=1)
 model.summary()
 
-weight = [v for v in model.trainable_variables if v.name == "b:0"][0]
-print(weight)
+#weight = [v for v in model.trainable_variables if v.name == "b:0"][0]
+#print(weight)
 
 hist = plt.hist(np.absolute(weight.numpy()), bins=10, range=(0,40))
 plt.show()
