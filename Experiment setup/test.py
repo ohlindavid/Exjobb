@@ -18,7 +18,7 @@ from psychopy import prefs
 from psychopy import sound, gui, visual, core, data, event, logging, clock, hardware
 from psychopy.constants import (NOT_STARTED, STARTED, PLAYING, PAUSED,
                                 STOPPED, FINISHED, PRESSED, RELEASED, FOREVER)
-
+from psychopy import parallel
 import numpy as np  # whole numpy lib is available, prepend 'np.'
 from numpy import (sin, cos, tan, log, log10, pi, average,
                    sqrt, std, deg2rad, rad2deg, linspace, asarray)
@@ -28,7 +28,17 @@ import sys  # to get file system encoding
 
 from psychopy.hardware import keyboard
 
+#trigger codes
+enc_word = 1
+enc_img = 2
+enc_both = 3
+enc_question = 4
 
+re_word = 5
+re_question = 6
+
+#Port for triggers
+port = parallel.ParallelPort(address=0x0378)
 
 # Ensure that relative paths start from the same directory as this script
 _thisDir = os.path.dirname(os.path.abspath(__file__))
