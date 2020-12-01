@@ -4,9 +4,9 @@ NSTEP=1;
 Fs=128;
 e=0;
 
-%[X,T]=multigaussdata(1024,[40 20 10],[1 1 1],[1 1.5 3],[4 12 9],[pi/2 pi pi],Fs);
+[X,T]=multigaussdata(1024,[40 20 10],[1 1 1],[1 1.5 3],[4 12 9],[pi/2 pi pi],Fs);
 
-[X,T]=multigaussdata(1024,[30],[1],[1.5],[12],[pi],Fs);
+%[X,T]=multigaussdata(1024,[30],[1],[1.5],[12],[pi],Fs);
 
 candsigvect=[10:2:40]; % Candidate sigma for the unknown sigma of X
 Renyivect=zeros(1,length(candsigvect));
@@ -61,7 +61,7 @@ xlabel('Frequency (Hz)')
 
 Renyivect(i)=Renyi;
 
-pause
+%pause
 
 
 end
