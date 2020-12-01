@@ -3,8 +3,8 @@ close all;
 clc;
 E = 60;
 time = 4;
-Fs = 69.4;
-N = 140;
+Fs = 1024/2;
+N = 1024;
 M = N/2;
 noreal = 10;
 
@@ -57,14 +57,14 @@ for j=1:100
    %     in2(:,i) = exp(-2*in).*sin(8*in+2) + exp(-in).*sin(2*in+z) - 5*sin(2*in-pi/0.8+z).*exp(-2*in);
    % end
    % in = in2;
-   rand(noreal,1)*2*pi
+   
    for  i=1:2
-    [X,T] = multigaussdata(N,[512],[1],[1],[7],[0],Fs);
-    [X2,T2] = multigaussdata(N,[512],[1],[1],[7],[0],Fs);
+    [X,T] = multigaussdata(N,[5120 5120],[1/sqrt(2) 1/sqrt(2)],[1 1],[5 5],[0 0],Fs);
+    [X2,T2] = multigaussdata(N,[5120 5120],[1 0.1],[1 1],[5 32],[0 0],Fs);
     %[X,T] = multigaussdata(N,[512, 100, 200, 700, 50],[1/2,1/2,1/2,1/2],[1,1,0.5,2],[4,12,8,17],rand(noreal,4)*2*pi,Fs);
     %[X2,T2]= multigaussdata(N,[512,60,150,650],[1/2,1/2,1/2,1/2],[1,0.5,2,0.2],[5,4,17,13],rand(noreal,4)*2*pi,Fs);
     Ain(:,i) = X(:,1);
-    Bin(:,i) = 0.1*X2(:,1);
+    Bin(:,i) = 0.9*X2(:,1);
    end
    SNR=20;
    lambda=10^(SNR/10);
