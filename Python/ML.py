@@ -48,7 +48,15 @@ model.compile(
     loss=losses.BinaryCrossentropy(),
     optimizer=optimizers.Adam(),
     metrics=['accuracy'])
-history = model.fit(data_generator,steps_per_epoch=200,epochs=20)
+history = model.fit(data_generator,steps_per_epoch=200,epochs=10)
+model.summary()
+model.layers[1].trainable = False
+model.layers[-1].trainable = False
+model.compile(
+    loss=losses.BinaryCrossentropy(),
+    optimizer=optimizers.Adam(),
+    metrics=['accuracy'])
+history = model.fit(data_generator,steps_per_epoch=200,epochs=1)
 model.summary()
 
 #hist = plt.hist(np.absolute(weight.numpy()), bins=10, range=(0,40))
@@ -61,6 +69,7 @@ model.summary()
 testplot = np.float32(testplot)
 t  = tensorflow.constant([testplot])
 o = MorletConv([L,nchan],T).apply(t)
+np.savetxt("data",o[0,:,0,:])
 fig = plt.figure(1)
 plt.imshow(o[0,:,0,:])
 fig.show()
