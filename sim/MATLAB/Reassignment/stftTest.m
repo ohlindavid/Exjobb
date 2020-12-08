@@ -1,6 +1,9 @@
 Fs = 128;
 
 [x1,T] = multigaussdata1(1024,[40 20 10],[1 1 1],[1 1.5 3],[4 12 9],[pi/2 pi pi],Fs);;
+Hl=12*lambda; %Long enough window
+H=exp(-0.5*([-Hl/2:Hl/2-1]'/lambda).^2);
+
 data = real(x1');
 step = 1; %default
 nfft = 2048;
