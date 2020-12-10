@@ -49,7 +49,6 @@ end
 Hl=12*lambda; %Long enough window
 H=exp(-0.5*([-Hl/2:Hl/2-1]'/lambda).^2);
 
-
 % TH and DH needed for the reassignment
 
 Tvect=[-Hl/2+1:Hl/2]';
@@ -64,7 +63,7 @@ data=data(:);
 % Spectrogram calculation
 
 
-mvect=[0:NFFT-1];
+%mvect=[0:NFFT-1];
 data=[zeros(fix(Hl/2),1);data;zeros(fix(Hl/2),1)];
 datal=length(data(:,1));
 
@@ -83,23 +82,25 @@ for i=0:NSTEP:datal-Hl-1
    testdata=testdata-mean(testdata); % Mean value reduction!
    F=fft(H.*testdata,NFFT);
    TF=fft(TH.*testdata,NFFT);
-   DF=fft(DH.*testdata,NFFT);   
+   DF=fft(DH.*testdata,NFFT);
    FF=[FF F(1:NFFT/2)];
    TFF=[TFF TF(1:NFFT/2)];
    DFF=[DFF DF(1:NFFT/2)];
    TI=[TI i];
 end
 SS=abs(FF).^2;
+% SS = SS + 0.1; % Add epsilon to check effect on final spectrogram
 TI=TI/Fs;
 FI=[0:NFFT/2-1]'/NFFT*Fs;
-  
-  
+
 % Scaling factors for the scaled Gaussian reassignment
 
 fact=(lambda^2+candsig^2)/(lambda^2);     
 fact2=(lambda^2+candsig^2)/(candsig^2);
-  
+
 % Scaled reassignment calculation
+
+% imaginary = max(max(imag(FF)))
 
 for n=1:length(TI)
     for m=1:NFFT/2
@@ -109,14 +110,11 @@ for n=1:length(TI)
             nmat(m,n)=n+round(nmat0(m,n));
             mmat(m,n)=m-round(mmat0(m,n));
             if mmat(m,n)>0 & mmat(m,n)<=NFFT/2 & nmat(m,n)>0 & nmat(m,n)<=length(TI) 
-              MSS(mmat(m,n),nmat(m,n))=MSS(mmat(m,n),nmat(m,n))+SS(m,n);
+                MSS(mmat(m,n),nmat(m,n))=MSS(mmat(m,n),nmat(m,n))+SS(m,n);
             else
-               mmat(m,n)=0;
-               nmat(m,n)=0;
+                mmat(m,n)=0;
+                nmat(m,n)=0;
             end
         end
      end
 end
-
-
-
