@@ -1,0 +1,36 @@
+This file contains information about what test refers to the test files in this folder.
+
+
+"TestBins2Bins.py":
+This is a test on AlbinDamir data than takes binned EEG from subject 6 (labels FA and LM) and trains one network on each learning phase bin (calculates a validation score as well). Then it applies each bin-network to each decoding phase bin.
+Binned train: "C:/Users/Oskar/Documents/GitHub/exjobb/AD_comp_to_Bramao/"
+Binned pred/decoding: "C:/Users/Oskar/Documents/GitHub/exjobb/AD_comp_to_Bramao_Pred/"
+More subjects? Try multiple subjects for the test above and 2 below to find the one with the best results.
+
+Multiple categories
+
+Train, validation and test on subject X from AlbinDamir data set.
+
+Train, validation and test on binned EEG from subject X from AlbinDamir data set. validate and test on same bin as training.
+
+"TestSim1ch5comp.py":
+Simulated data with 5 components on 1 channel. Input to multigaussdata.m was (N=512,Fs=512):
+A: (N,[100 100 300 512 10^7],[0.5 0.5 1 1 1],[0.7 0.1 0.4 0.5 0],[6 6 12 17 1],[0 0.05 0 0 0],Fs)
+B: (N,[100 100 300 512 10^7],[0.5 0.5 1 1 1],[0.7 0.1 0.4 0.5 0],[6 6 8 17 1],[0 0.05 0 0 0],Fs)
+So difference between a and b is a different alpha frequency. Make new data with generating1ch5comp.m.
+
+"TestSim1ch5compNoise.py":
+Exact same as above but with noise with SNR=1.1. Make new data with generating1ch5comp.m.
+
+"TestChirp.py":
+Simulated data with chirp signal (1ch) (N=512,Fs=512) with composition:
+A: time 0 Freq 0 ----> time 1 frequency 40
+B: time 0 Freq 0 ----> time 1 frequency 50
+
+"TestChirpNoise.py"
+Same as above but with SNR=1.1 noise.
+
+
+Test for only first layer?
+
+Test to measure initialization

@@ -18,13 +18,13 @@ def show_loss(history):
 
 def show_accuracy(history):
     fig = plt.figure(2)
-    acc = history.history['acc']
-    val_acc = history.history['val_acc']
+    acc = history.history['accuracy']
+    #val_acc = history.history['val_acc']
 
     epochs = range(1, len(acc) + 1)
 
     plt.plot(epochs, acc, 'bo', label='Training acc')
-    plt.plot(epochs, val_acc, 'b', label='Validation acc')
+    #plt.plot(epochs, val_acc, 'b', label='Validation acc')
     plt.title('Training and validation accuracy')
     plt.xlabel('Epochs')
     plt.ylabel('Accuracy')
