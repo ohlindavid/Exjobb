@@ -34,7 +34,7 @@ end
 if nargin<6
    Fs=1; 
 end
-if nargin<5
+if nargin<4
    NSTEP=1; 
 end
 if nargin<4
