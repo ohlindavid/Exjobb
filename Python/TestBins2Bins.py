@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 import os,sys
 import tensorflow.keras.backend as K
 from generator import signalLoader
-from define_model import define_model
+from define_model import define_model_bins
 import pickle
 import math
 
@@ -59,7 +59,7 @@ for bin in bins:
     data_generatorVal = signalLoader(nchan,val_list_names,val_list_labels,path()+bin+'/')
     data_generator = signalLoader(nchan,list_names,list_labels,path()+bin+'/')
 
-    model = define_model(nchan,L,Fs)
+    model = define_model_bins(nchan,L,Fs)
     history = model.fit(data_generator,validation_data=(data_generatorVal),steps_per_epoch=len(list_labels),validation_steps=len(val_list_labels),epochs=10) # callbacks=[lr_scheduler]
     model.summary()
     val_accs.append(history.history["val_accuracy"])

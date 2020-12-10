@@ -8,20 +8,20 @@ import os,sys
 import tensorflow.keras.backend as K
 from settings import path, pathPred
 from generator import signalLoader
-from define_model import define_model
+from define_model import define_base_CNN
 import math
 
 who = "Oskar"
 def path():
     if who=="Oskar":
-        return "C:/Users/Oskar/Documents/GitHub/exjobb/Testing Sets/Simulated/5comp_1ch/"
+        return "C:/Users/Oskar/Documents/GitHub/exjobb/Testing Sets/Simulated/5comp_1ch_noise/"
     if who=="David":
-        return "C:/Users/david/Documents/GitHub/exjobb/Testing Sets/Simulated/5comp_1ch/"
+        return "C:/Users/david/Documents/GitHub/exjobb/Testing Sets/Simulated/5comp_1ch_noise/"
 def pathPred():
     if who=="Oskar":
-        return "C:/Users/Oskar/Documents/GitHub/exjobb/Testing Sets/Simulated/5comp_1ch/"
+        return "C:/Users/Oskar/Documents/GitHub/exjobb/Testing Sets/Simulated/5comp_1ch_noise/"
     if who=="David":
-        return "C:/Users/david/Documents/GitHub/exjobb/Testing Sets/Simulated/5comp_1ch/"
+        return "C:/Users/david/Documents/GitHub/exjobb/Testing Sets/Simulated/5comp_1ch_noise/"
 
 nchan = 1 #Antal kanaler
 L = 512 #EEG-längd per epok innan TF-analys
@@ -59,7 +59,7 @@ for i in range(0,k_folds):
     data_generatorVal = signalLoader(nchan,val_list_names,val_list_labels,path())
     data_generator = signalLoader(nchan,list_names,list_labels,path())
 
-    model = define_model(nchan,L,Fs)
+    model = define_base_CNN(nchan,L,Fs)
     history = model.fit(data_generator,validation_data=(data_generatorVal),steps_per_epoch=len(list_labels),validation_steps=len(val_list_labels),epochs=10) # callbacks=[lr_scheduler]
     model.summary()
 
