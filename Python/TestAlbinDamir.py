@@ -23,7 +23,7 @@ def pathPred():
     if who=="David":
         return "C:/Users/david/Documents/GitHub/exjobb/Testing Sets/Albin&Damir/AD_data_set_subject_1/"
 
-nchan = 31 #Antal kanaler
+nchan = 3 #Antal kanaler
 L = 2049 #EEG-längd per epok innan TF-analys
 Fs = 512
 
@@ -61,7 +61,12 @@ for i in range(0,k_folds):
     data_generator = signalLoader(nchan,list_names,list_labels,path())
 
     model = define_model(nchan,L,Fs)
-    history = model.fit(data_generator,validation_data=(data_generatorVal),steps_per_epoch=len(list_labels),validation_steps=len(val_list_labels),epochs=40) # callbacks=[lr_scheduler]
+    history = model.fit(
+        data_generator,
+        validation_data=(data_generatorVal),
+        steps_per_epoch=len(list_labels),
+        validation_steps=len(val_list_labels),
+        epochs=10) # callbacks=[lr_scheduler]
     model.summary()
 
     VAL_ACC.append(history.history["val_accuracy"])

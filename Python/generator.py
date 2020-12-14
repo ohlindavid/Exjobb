@@ -13,7 +13,7 @@ def signalLoader(nchan,files,labels,path,batch_size=1):
             Y = np.vstack(Y)
             #print(files[batch_start:limit],Y)
             if (nchan > 1):
-                yield (np.expand_dims(X,axis=0),Y) #a tuple with two numpy arrays with batch_size samples
+                yield (np.expand_dims(X[:,0:nchan],axis=0),Y) #a tuple with two numpy arrays with batch_size samples
             else:
                 yield (X,Y)
             batch_start += batch_size

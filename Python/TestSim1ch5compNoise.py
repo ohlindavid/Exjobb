@@ -11,7 +11,7 @@ from generator import signalLoader
 from define_model import define_model
 import math
 
-who = "Oskar"
+who = "David"
 def path():
     if who=="Oskar":
         return "C:/Users/Oskar/Documents/GitHub/exjobb/Testing Sets/Simulated/5comp_1ch_noise/"
@@ -33,6 +33,7 @@ labels = np.append(labels,labels2)
 names = os.listdir(path())
 labelsnames = np.concatenate([[names],[labels]],0)
 labelsnames = np.transpose(labelsnames)
+np.random.seed(4)
 np.random.shuffle(labelsnames)
 labelsnames = np.transpose(labelsnames)
 names = labelsnames[0,:]
@@ -60,7 +61,12 @@ for i in range(0,k_folds):
     data_generator = signalLoader(nchan,list_names,list_labels,path())
 
     model = define_model(nchan,L,Fs)
-    history = model.fit(data_generator,validation_data=(data_generatorVal),steps_per_epoch=len(list_labels),validation_steps=len(val_list_labels),epochs=5) # callbacks=[lr_scheduler]
+    history = model.fit(
+        data_generator,
+        validation_data=(data_generatorVal),
+        steps_per_epoch=len(list_labels),
+        validation_steps=len(val_list_labels),
+        epochs=10) # callbacks=[lr_scheduler]
     model.summary()
 
     VAL_ACC.append(history.history["val_accuracy"])
@@ -68,4 +74,4 @@ for i in range(0,k_folds):
     VAL_LOSS.append(history.history["val_loss"])
     TR_LOSS.append(history.history["loss"])
 print(VAL_ACC)
-print(VAL_LOSS)
+#print(VAL_LOSS)
