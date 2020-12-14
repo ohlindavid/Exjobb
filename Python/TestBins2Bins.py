@@ -24,7 +24,7 @@ def pathPred():
         return "C:/Users/david/Documents/GitHub/exjobb/Testing Sets/Albin&Damir/AD_comp_to_Bramao_Pred/"
 
 nchan = 31 #Antal kanaler
-L = 75 #EEG-längd per epok innan TF-analys
+L = 102 #EEG-längd per epok innan TF-analys
 Fs = 512
 
 bin_accs = []
@@ -32,8 +32,8 @@ val_accs = []
 
 bins = os.listdir(path())
 predbins = os.listdir(pathPred())
-k_folds = 7
-for bin in bins:
+k_folds = 10
+for bin in bins[0:int(len(bins)/10)]:
     print("BIN: " + str(bin))
     names = os.listdir(path()+bin)
     labels = np.zeros((1,int(len(names)/2)))
@@ -64,19 +64,20 @@ for bin in bins:
     model.summary()
     val_accs.append(history.history["val_accuracy"])
 
-    for i in range(5):
-        model.layers[i].trainable = False
+#    for i in range(5):
+#        model.layers[i].trainable = False
+#
+#    for predbin in predbins:
+#        print("Prediction BIN: " + predbin)
+#        prednames = os.listdir(pathPred()+predbin)
+#        predlabels = np.zeros((1,int(len(prednames)/2)))
+#        predlabels2 = np.zeros((1,int(len(prednames)/2)))
+#        predlabels = np.append(labels,labels2)
+#        data_generatorPred = signalLoader(nchan,prednames,predlabels,pathPred() + predbin +"/")
+#        history1 = model.fit(data_generatorPred,steps_per_epoch=len(predlabels),epochs=1)
+#        bin_accs.append(history1.history["accuracy"])
+#    print(bin_accs)
+#
+#print(bin_accs)
 
-    for predbin in predbins:
-        print("Prediction BIN: " + predbin)
-        prednames = os.listdir(pathPred()+predbin)
-        predlabels = np.zeros((1,int(len(prednames)/2)))
-        predlabels2 = np.zeros((1,int(len(prednames)/2)))
-        predlabels = np.append(labels,labels2)
-        data_generatorPred = signalLoader(nchan,prednames,predlabels,pathPred() + predbin +"/")
-        history1 = model.fit(data_generatorPred,steps_per_epoch=len(predlabels),epochs=1)
-        bin_accs.append(history1.history["accuracy"])
-    print(bin_accs)
-
-print(bin_accs)
 print(val_accs)

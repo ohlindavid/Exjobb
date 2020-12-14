@@ -45,7 +45,7 @@ VAL_ACC = []
 VAL_LOSS = []
 
 k_folds= 7
-for i in range(0,k_folds):
+for i in range(0,k_folds-6):
     print("Fold number " + str(i+1) + "!")
     length  = len(labels)
     indices = range(0,length)
@@ -60,7 +60,7 @@ for i in range(0,k_folds):
     data_generator = signalLoader(nchan,list_names,list_labels,path())
 
     model = define_model(nchan,L,Fs)
-    history = model.fit(data_generator,validation_data=(data_generatorVal),steps_per_epoch=len(list_labels),validation_steps=len(val_list_labels),epochs=5) # callbacks=[lr_scheduler]
+    history = model.fit(data_generator,validation_data=(data_generatorVal),steps_per_epoch=len(list_labels),validation_steps=len(val_list_labels),epochs=10) # callbacks=[lr_scheduler]
     model.summary()
 
     VAL_ACC.append(history.history["val_accuracy"])

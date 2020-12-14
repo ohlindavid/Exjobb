@@ -5,7 +5,7 @@ from tensorflow.keras import layers, optimizers, losses, Input
 def define_model_bins(nchan,L,Fs):
     model = tf.keras.Sequential()
     model.add(layers.InputLayer((L,nchan),batch_size=1))
-    model.add(MorletConv([L,nchan],Fs,input_shape=[L,nchan,1],etas=25,wtime=0.04))
+    model.add(MorletConv([L,nchan],Fs,input_shape=[L,nchan,1],etas=25,wtime=0.1,dynamic=True))
     model.add(layers.Conv2D(filters=25, kernel_size=[1,nchan], activation='elu'))
     model.add(layers.Permute((3,1,2)))
     model.add(layers.AveragePooling2D(pool_size=(1, 10), strides=(1,5)))
@@ -21,7 +21,7 @@ def define_model_bins(nchan,L,Fs):
 def define_model(nchan,L,Fs):
     model = tf.keras.Sequential()
     model.add(layers.InputLayer((L,nchan),batch_size=1))
-    model.add(MorletConv([L,nchan],Fs,input_shape=[L,nchan,1],etas=25,wtime=0.36))
+    model.add(MorletConv([L,nchan],Fs,input_shape=[L,nchan,1],etas=25,wtime=0.36,dynamic=True))
     model.add(layers.Conv2D(filters=25, kernel_size=[1,nchan], activation='elu'))
     model.add(layers.Permute((3,1,2)))
     model.add(layers.AveragePooling2D(pool_size=(1, 31), strides=(1,15)))
