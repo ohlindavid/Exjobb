@@ -17,7 +17,10 @@ def signalLoader(nchan,files,labels,path,batch_size=1):
             X = X / sum_of_rows[np.newaxis,:]
 #            print(np.shape(sum_of_rows))
             #print(files[batch_start:limit],Y)
-            yield (np.expand_dims(X,axis=0),Y) #a tuple with two numpy arrays with batch_size samples
+            if (nchan > 1):
+                yield (np.expand_dims(X[:,0:nchan],axis=0),Y) #a tuple with two numpy arrays with batch_size samples
+            else:
+                yield (X,Y)
             batch_start += batch_size
             batch_end += batch_size
 

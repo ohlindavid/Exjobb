@@ -9,7 +9,9 @@ More subjects? Try multiple subjects for the test above and 2 below to find the 
 
 Multiple categories
 
-Train, validation and test on subject X from AlbinDamir data set.
+"TestAlbinDamir":
+Test of the ALbinDamir using the whole EEG encoding trial for one subject.
+
 
 Train, validation and test on binned EEG from subject X from AlbinDamir data set. validate and test on same bin as training.
 
