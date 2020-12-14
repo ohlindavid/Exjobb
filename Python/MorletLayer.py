@@ -35,10 +35,8 @@ class MorletConv(keras.layers.Layer):
         output = tf.raw_ops.Conv2D(input = tinput,filter = mwin,strides = [1,1,1,1], padding='VALID')
         #output = tf.raw_ops.Transpose(x = output,perm=[0,1,3,2])
 
-        self.add_metric(self.b[0],name=("b0"))
-        self.add_metric(self.b[1],name=("b1"))
-        self.add_metric(self.a[0],name="a0")
-        self.add_metric(self.a[1],name="a1")
+    #       tf.print(self.b)
+
         return output
 
     def compute_output_shape(self, input_shape):

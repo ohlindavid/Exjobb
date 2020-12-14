@@ -13,7 +13,7 @@ def signalLoader(nchan,files,labels,path,batch_size=1):
             Y = np.vstack(Y)
 #            print(np.mean(X,axis=0))
             X = X - np.mean(X,axis=0)
-            sum_of_rows = X.sum(axis=0)
+            sum_of_rows = abs(X).sum(axis=0)
             X = X / sum_of_rows[np.newaxis,:]
 #            print(np.shape(sum_of_rows))
             #print(files[batch_start:limit],Y)
