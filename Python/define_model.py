@@ -25,7 +25,7 @@ def define_model(nchan,L,Fs):
     model.add(layers.Conv2D(filters=25, kernel_size=[1,nchan], activation='elu'))
     model.add(layers.Permute((3,1,2)))
     model.add(layers.AveragePooling2D(pool_size=(1, 71), strides=(1,15)))
-    #model.add(layers.Dropout(0.50))
+    model.add(layers.Dropout(0.50))
     model.add(layers.Flatten())
     model.add(layers.Dense(3, activation='softmax'))
     model.compile(
