@@ -53,7 +53,7 @@ def define_base_CNN(nchan,L,Fs):
 
 def load_tensorboard(who,date,fold):
     if (who=="Oskar"):
-        log_dir = "C:/Users/Oskar/Documents/GitHub/Exjobb/logs/fit/" + str(date) + "/" + str(fold)
+        log_dir = "C:/Users/Oskar/Documents/GitHub/Exjobb/logs/fit/" + str(date) + "/" + str(fold+1)
     else:
-        log_dir = "C:/Users/Oskar/Documents/GitHub/Exjobb/logs/fit/" + str(date) + "/" + str(fold)
+        log_dir = "C:/Users/Oskar/Documents/GitHub/Exjobb/logs/fit/" + str(date) + "/" + str(fold+1)
     return tf.keras.callbacks.TensorBoard(log_dir=log_dir, histogram_freq=1)
