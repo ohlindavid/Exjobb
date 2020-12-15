@@ -13,7 +13,7 @@ class MorletConvRaw(keras.layers.Layer):
         self.etas = etas #Antal fönster
         self.wtime = wtime #Fönsterbredd i tid
         self.wlen = int(self.wtime*Fs) #Fönsterbredd i samples, från Zhao19
-        self.a = self.add_weight(name='a', shape=(self.etas,1), initializer=keras.initializers.Constant(value=50), trainable=True)
+        self.a = self.add_weight(name='a', shape=(self.etas,1), initializer=keras.initializers.Constant(value=10), trainable=True)
         self.b = self.add_weight(name='b', shape=(self.etas,1), initializer=keras.initializers.RandomUniform(minval=2, maxval=20, seed=1), trainable=True)
 
     def call(self, inputs):
@@ -35,8 +35,6 @@ class MorletConvRaw(keras.layers.Layer):
         # Convolve.
         output = tf.raw_ops.Conv2D(input = tinput,filter = mwin,strides = [1,1,1,1], padding='VALID')
         #output = tf.raw_ops.Transpose(x = output,perm=[0,1,3,2])
-
-    #       tf.print(self.b)
 
         return output
 
@@ -72,11 +70,6 @@ class MorletConv(keras.layers.Layer):
         output = tf.nn.conv2d(tinput, mwin, [1,1,1,1], 'VALID')
         #output = tf.raw_ops.Transpose(x = output,perm=[0,1,3,2])
 
-        self.add_metric(self.b[0],name=("b0")) # + str(i)
-        self.add_metric(self.b[1],name=("b1")) # + str(i)
-        self.add_metric(self.a[0],name="a0")
-        self.add_metric(self.a[1],name="a1")
-
         return output
 
 class VanillaConv(keras.layers.Layer):
@@ -110,10 +103,5 @@ class VanillaConv(keras.layers.Layer):
         # Convolve.
         output = tf.raw_ops.Conv2D(input = tinput,filter = mwin,strides = [1,1,1,1], padding='VALID')
         #output = tf.raw_ops.Transpose(x = output,perm=[0,1,3,2])
-
-        self.add_metric(self.b[0],name=("b0")) # + str(i)
-        self.add_metric(self.b[1],name=("b1")) # + str(i)
-        self.add_metric(self.a[0],name="a0")
-        self.add_metric(self.a[1],name="a1")
 
         return output

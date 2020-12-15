@@ -8,10 +8,11 @@ import os,sys
 import tensorflow.keras.backend as K
 from settings import path, pathPred
 from generator import signalLoader
-from define_model import define_model
+from define_model import define_model, load_tensorboard
 import math
+import datetime
 
-who = "David"
+who = "Oskar"
 def path():
     if who=="Oskar":
         return "C:/Users/Oskar/Documents/GitHub/exjobb/Testing Sets/Albin&Damir/AD_data_set_subject_6/"
@@ -47,7 +48,8 @@ VAL_ACC = []
 VAL_LOSS = []
 
 k_folds= 5
-for i in range(0,k_folds-4):
+
+for i in range(0,k_folds):
     print("Fold number " + str(i+1) + "!")
     length  = len(labels)
     indices = range(0,length)
@@ -61,13 +63,16 @@ for i in range(0,k_folds-4):
     data_generatorVal = signalLoader(nchan,val_list_names,val_list_labels,path())
     data_generator = signalLoader(nchan,list_names,list_labels,path())
 
+
+    tensorboard_callback = load_tensorboard(who)
     model = define_model(nchan,L,Fs)
     history = model.fit(
         data_generator,
         validation_data=(data_generatorVal),
         steps_per_epoch=len(list_labels),
         validation_steps=len(val_list_labels),
-        epochs=30) # callbacks=[lr_scheduler]
+        epochs=20,
+        callbacks=[tensorboard_callback])
     model.summary()
 
     VAL_ACC.append(history.history["val_accuracy"])
