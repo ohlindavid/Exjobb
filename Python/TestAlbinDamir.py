@@ -48,6 +48,7 @@ VAL_ACC = []
 VAL_LOSS = []
 
 k_folds= 5
+date = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
 
 for i in range(0,k_folds):
     print("Fold number " + str(i+1) + "!")
@@ -63,8 +64,7 @@ for i in range(0,k_folds):
     data_generatorVal = signalLoader(nchan,val_list_names,val_list_labels,path())
     data_generator = signalLoader(nchan,list_names,list_labels,path())
 
-
-    tensorboard_callback = load_tensorboard(who)
+    tensorboard_callback = load_tensorboard(who,date,i)
     model = define_model(nchan,L,Fs)
     history = model.fit(
         data_generator,

@@ -1,6 +1,7 @@
 import tensorflow as tf
 from MorletLayer import MorletConv, VanillaConv, MorletConvRaw
 from tensorflow.keras import layers, optimizers, losses, Input
+import datetime
 
 def define_model_bins(nchan,L,Fs):
     model = tf.keras.Sequential()
@@ -50,9 +51,9 @@ def define_base_CNN(nchan,L,Fs):
         metrics=['accuracy'])
     return model
 
-def load_tensorboard(who):
+def load_tensorboard(who,date,fold):
     if (who=="Oskar"):
-        log_dir = "C:/Users/Oskar/Documents/GitHub/Exjobb/logs/fit/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+        log_dir = "C:/Users/Oskar/Documents/GitHub/Exjobb/logs/fit/" + str(date) + "/" + str(fold)
     else:
-        log_dir = "C:/Users/Oskar/Documents/GitHub/Exjobb/logs/fit/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
-    return tensorflow.keras.callbacks.TensorBoard(log_dir=log_dir, histogram_freq=1)
+        log_dir = "C:/Users/Oskar/Documents/GitHub/Exjobb/logs/fit/" + str(date) + "/" + str(fold)
+    return tf.keras.callbacks.TensorBoard(log_dir=log_dir, histogram_freq=1)
