@@ -33,7 +33,7 @@ class ReassignmentSpec(keras.layers.Layer):
         dH[1] = 0
         dH[-2] = 0
         dH = dH[1:-1]
-        tH = np.arange(-hl/2+1, hl/2)*H
+        tH = np.arange(-hl/2+1, hl/2+1)*H
 
         #Matrix representations
         data = tf.pad(input, [hl/2,hl/2])
@@ -42,7 +42,7 @@ class ReassignmentSpec(keras.layers.Layer):
         dHmat = np.zeros((rows, cols))
         tHmat = np.zeros((rows, cols))
         M = np.zeros((rows, cols))
-        for i=0:rows-1
+        for i in range(0, rows-1):
             M[i,:] = np.pad(np.ones((1, hl), (i-1,cols-i-hl+1)))
             Hmat[i,:] =  np.pad(H, (i-1,cols-i-hl+1))
             dHmat[i,:] = np.pad(dH, (i-1,cols-i-hl+1))
@@ -69,7 +69,7 @@ class ReassignmentSpec(keras.layers.Layer):
 
         #Displacement matrices
         jj0 = ct*tf.math.real(Fth*tf.math.conj(Fh)/SS)
-        ii0 = cw*self.nfft/(2*np.pi)*tf.math.imag(Fdh.*tf.math.conj(Fh)/SS)
+        ii0 = cw*self.nfft/(2*np.pi)*tf.math.imag(Fdh*tf.math.conj(Fh)/SS)
         ii = np.arange(1, nfft/2, 1)
         jj = np.arange(1, rows, 1)
         ii = tf.tile(ii, [rows, 1])
@@ -83,9 +83,9 @@ class ReassignmentSpec(keras.layers.Layer):
         rss = np.zeros((xs, ys));
 
         #Reassignment
-        for m = 1:nfft/2
-            for n = 1:(rows-1)
-                rss[self.margin + ii[m,n], self.margin + jj[m,n]] = rss[self.margin + ii[m,n], self.margin + jj[m,n]) + SS[m,n]
+        for m in range(0, nfft/2 - 1):
+            for n in range(0, rows - 1):
+                rss[self.margin + ii[m,n], self.margin + jj[m,n]] = rss[self.margin + ii[m,n], self.margin + jj[m,n]] + SS[m,n]
 
         #Cutting margins
         rss = tf.slice(rss, [self.margin,self.margin], [xs-2*self.margin,ys-2*self.margin])

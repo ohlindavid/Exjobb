@@ -1,5 +1,6 @@
 import tensorflow as tf
 from MorletLayer import MorletConv, VanillaConv, MorletConvRaw
+from ReassignmentLayer import ReassignmentSpec
 from tensorflow.keras import layers, optimizers, losses, Input,regularizers
 import datetime
 
@@ -38,15 +39,15 @@ def define_model(nchan,L,Fs):
 def define_model_R(nchan,L,Fs):
     model = tf.keras.Sequential()
     model.add(layers.InputLayer((L,nchan),batch_size=1))
-    model.add(ReassignmentLayer([L,nchan],Fs,input_shape=[L,nchan,1]))
+    model.add(ReassignmentSpec([L,nchan],Fs,input_shape=[L,nchan,1]))
     model.add(layers.Conv2D(filters=10, kernel_size=[1,nchan], activation='elu'))
     model.add(layers.Permute((3,1,2)))
     model.add(layers.AveragePooling2D(pool_size=(1, 71), strides=(1,15)))
     #model.add(layers.Dropout(0.75))
     model.add(layers.Flatten())
-    model.add(layers.Dense(3, activation='softmax'))
+    model.add(layers.Dense(1, activation='sigmoid'))
     model.compile(
-        loss=losses.SparseCategoricalCrossentropy(),
+        loss=losses.BinaryCrossentropy(),
         optimizer=optimizers.Adam(),
         metrics=['accuracy'])
     return model

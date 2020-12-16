@@ -2,7 +2,7 @@ Fs = 1024;
 tmax = 0.5;
 fmax = 20;
 
-% [x1,T] = multigaussdata1(1024,[40 20 10],[1 1 1],[1 1.5 3],[3 20 9],[pi/2 pi pi],Fs);
+[x1,T] = multigaussdata1(1024,[40 20 10],[1 1 1],[1 1.5 3],[3 20 9],[pi/2 pi pi],Fs);
 
 data = real(x1');
 step = 1; %default
@@ -23,7 +23,7 @@ data = repmat(data, [rows 1]);
 
 dh = ([ h 0 0 ] - [ 0 0 h ])/2;
 dh = dh(2:(Hl-1));
-th = linspace(-Hl/2 + 1,Hl/2, Hl).*h;
+th = linspace(-Hl/2 + 1,Hl/2, Hl).*h
 
 hmat = zeros(size(data));
 dhmat = hmat;

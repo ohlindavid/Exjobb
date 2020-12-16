@@ -8,7 +8,7 @@ import os,sys
 import tensorflow.keras.backend as K
 from settings import path, pathPred
 from generator import signalLoader
-from define_model import define_model, load_tensorboard
+from define_model import define_model_R, load_tensorboard
 import math
 import datetime
 
@@ -41,11 +41,6 @@ names = labelsnames[0,:]
 labels = labelsnames[1,:]
 labels = labels.astype(np.float)
 
-TR_ACC = []
-TR_LOSS = []
-VAL_ACC = []
-VAL_LOSS = []
-
 date = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
 k_folds= 7
 
@@ -73,10 +68,3 @@ for i in range(0,k_folds):
         epochs=10,
         callbacks=[tensorboard_callback]) # callbacks=[lr_scheduler]
     model.summary()
-
-    VAL_ACC.append(history.history["val_accuracy"])
-    TR_ACC.append(history.history["accuracy"])
-    VAL_LOSS.append(history.history["val_loss"])
-    TR_LOSS.append(history.history["loss"])
-print(VAL_ACC)
-#print(VAL_LOSS)
