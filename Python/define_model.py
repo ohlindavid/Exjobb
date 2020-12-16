@@ -28,9 +28,9 @@ def define_model(nchan,L,Fs):
     model.add(layers.AveragePooling2D(pool_size=(1, 71), strides=(1,15)))
     model.add(layers.Dropout(0.75))
     model.add(layers.Flatten())
-    model.add(layers.Dense(3, activation='softmax'))
+    model.add(layers.Dense(1, activation='sigmoid'))
     model.compile(
-        loss=losses.SparseCategoricalCrossentropy(),
+        loss=losses.BinaryCrossentropy(),
         optimizer=optimizers.Adam(),
         metrics=['accuracy'])
     return model

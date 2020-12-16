@@ -41,11 +41,6 @@ names = labelsnames[0,:]
 labels = labelsnames[1,:]
 labels = labels.astype(np.float)
 
-TR_ACC = []
-TR_LOSS = []
-VAL_ACC = []
-VAL_LOSS = []
-
 date = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
 k_folds= 7
 
@@ -71,12 +66,5 @@ for i in range(0,k_folds):
         steps_per_epoch=len(list_labels),
         validation_steps=len(val_list_labels),
         epochs=10,
-        callbacks=[tensorboard_callback]) # callbacks=[lr_scheduler]
+        callbacks=[tensorboard_callback])
     model.summary()
-
-    VAL_ACC.append(history.history["val_accuracy"])
-    TR_ACC.append(history.history["accuracy"])
-    VAL_LOSS.append(history.history["val_loss"])
-    TR_LOSS.append(history.history["loss"])
-print(VAL_ACC)
-#print(VAL_LOSS)
