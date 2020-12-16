@@ -64,7 +64,7 @@ for i in range(0,k_folds):
     data_generator = signalLoader(nchan,list_names,list_labels,path())
 
     tensorboard_callback = load_tensorboard(who,date,i)
-    model = define_model(nchan,L,Fs)
+    model = define_model_R(nchan,L,Fs)
     history = model.fit(
         data_generator,
         validation_data=(data_generatorVal),
