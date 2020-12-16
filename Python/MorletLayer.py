@@ -4,6 +4,7 @@ from tensorflow.keras import layers, backend
 import numpy as np
 import math
 from matplotlib import pyplot as plt
+from settings import a_init, b_init_min, b_init_max, train_a, train_b
 
 class MorletConvRaw(keras.layers.Layer):
     def __init__(self, input_dim, Fs, input_shape=[75,31,1],etas = 25,wtime = 0.04):
@@ -13,8 +14,8 @@ class MorletConvRaw(keras.layers.Layer):
         self.etas = etas #Antal fönster
         self.wtime = wtime #Fönsterbredd i tid
         self.wlen = int(self.wtime*Fs) #Fönsterbredd i samples, från Zhao19
-        self.a = self.add_weight(name='a', shape=(self.etas,1), initializer=keras.initializers.Constant(value=10), trainable=True)
-        self.b = self.add_weight(name='b', shape=(self.etas,1), initializer=keras.initializers.RandomUniform(minval=2, maxval=30, seed=1), trainable=True)
+        self.a = self.add_weight(name='a', shape=(self.etas,1), initializer=keras.initializers.Constant(value=a_init), trainable=train_a)
+        self.b = self.add_weight(name='b', shape=(self.etas,1), initializer=keras.initializers.RandomUniform(minval=b_init_min, maxval=b_init_max, seed=1), trainable=train_b)
 
     def call(self, inputs):
 

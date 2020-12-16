@@ -7,7 +7,7 @@ from plots import show_loss, show_accuracy
 import matplotlib.pyplot as plt
 import os,sys
 import tensorflow.keras.backend as K
-from settings import path, pathPred
+from settings import path, pathPred, epochs
 from generator import signalLoader
 from define_model import define_model, load_tensorboard
 import math
@@ -68,6 +68,6 @@ for i in range(0,k_folds-4):
         validation_data=(data_generatorVal),
         steps_per_epoch=len(list_labels),
         validation_steps=len(val_list_labels),
-        epochs=200,
+        epochs=epochs,
         callbacks=[tensorboard_callback]),
     model.summary()
