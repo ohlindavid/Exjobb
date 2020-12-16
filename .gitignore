@@ -4,6 +4,8 @@ __pycache__/
 *$py.class
 *settings.py
 
+logs/
+
 # C extensions
 *.so
 
@@ -132,3 +134,4 @@ Python/settings.py
 Python/settings.py
 Python/settings.py
 Python/settings.py
+*.v2
