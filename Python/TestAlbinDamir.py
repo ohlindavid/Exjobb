@@ -2,6 +2,7 @@ import tensorflow
 import numpy as np
 from tensorflow.keras import layers, optimizers, losses, Input
 from MorletLayer import MorletConv
+from tensorflow.keras.callbacks import EarlyStopping
 from plots import show_loss, show_accuracy
 import matplotlib.pyplot as plt
 import os,sys
@@ -15,32 +16,33 @@ import datetime
 who = "Oskar"
 def path():
     if who=="Oskar":
-        return "C:/Users/Oskar/Documents/GitHub/exjobb/Testing Sets/Albin&Damir/AD_data_set_subject_6/"
+        return "C:/Users/Oskar/Documents/GitHub/exjobb/Testing Sets/Albin&Damir/AD_data_set_subject_6/augmented_data/"
     if who=="David":
         return "C:/Users/david/Documents/GitHub/exjobb/Testing Sets/Albin&Damir/AD_data_set_subject_1/"
 def pathPred():
     if who=="Oskar":
-        return "C:/Users/Oskar/Documents/GitHub/exjobb/Testing Sets/Albin&Damir/AD_data_set_subject_1/"
+        return "C:/Users/Oskar/Documents/GitHub/exjobb/Testing Sets/Albin&Damir/AD_data_set_subject_7/"
     if who=="David":
         return "C:/Users/david/Documents/GitHub/exjobb/Testing Sets/Albin&Damir/AD_data_set_subject_1/"
 
-nchan = 3 #Antal kanaler
-L = 2049 #EEG-längd per epok innan TF-analys
+nchan = 6 #Antal kanaler
+L = 1282 #EEG-längd per epok innan TF-analys
 Fs = 512
 
-labels = np.zeros((1,60),dtype=int)
-labels2 = np.ones((1,60),dtype=int)
-labels3 = 2*np.ones((1,60),dtype=int)
+labels = np.zeros((1,60*8),dtype=int)
+labels2 = np.ones((1,60*8),dtype=int)
+labels3 = 2*np.ones((1,60*8),dtype=int)
 labels = np.append(np.append(labels,labels2),labels3)
 names = os.listdir(path())
 labelsnames = np.concatenate([[names],[labels]],0)
 labelsnames = np.transpose(labelsnames)
-np.random.seed(4)
+#np.random.seed(4)
 np.random.shuffle(labelsnames)
 labelsnames = np.transpose(labelsnames)
 names = labelsnames[0,:]
 labels = labelsnames[1,:]
 labels = labels.astype(np.float)
+print(labelsnames.T)
 
 TR_ACC = []
 TR_LOSS = []
@@ -50,7 +52,7 @@ VAL_LOSS = []
 k_folds= 5
 date = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
 
-for i in range(0,k_folds):
+for i in range(0,k_folds-4):
     print("Fold number " + str(i+1) + "!")
     length  = len(labels)
     indices = range(0,length)
@@ -66,20 +68,12 @@ for i in range(0,k_folds):
 
     tensorboard_callback = load_tensorboard(who,date,i)
     model = define_model(nchan,L,Fs)
+    es = EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience=2)
     history = model.fit(
         data_generator,
         validation_data=(data_generatorVal),
         steps_per_epoch=len(list_labels),
         validation_steps=len(val_list_labels),
-        epochs=20,
-        callbacks=[tensorboard_callback])
+        epochs=50,
+        callbacks=[tensorboard_callback]),
     model.summary()
-
-    VAL_ACC.append(history.history["val_accuracy"])
-    TR_ACC.append(history.history["accuracy"])
-    VAL_LOSS.append(history.history["val_loss"])
-    TR_LOSS.append(history.history["loss"])
-    print(VAL_ACC)
-
-print(VAL_ACC)
-#print(VAL_LOSS)

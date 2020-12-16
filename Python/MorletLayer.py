@@ -14,7 +14,7 @@ class MorletConvRaw(keras.layers.Layer):
         self.wtime = wtime #Fönsterbredd i tid
         self.wlen = int(self.wtime*Fs) #Fönsterbredd i samples, från Zhao19
         self.a = self.add_weight(name='a', shape=(self.etas,1), initializer=keras.initializers.Constant(value=10), trainable=True)
-        self.b = self.add_weight(name='b', shape=(self.etas,1), initializer=keras.initializers.RandomUniform(minval=2, maxval=20, seed=1), trainable=True)
+        self.b = self.add_weight(name='b', shape=(self.etas,1), initializer=keras.initializers.RandomUniform(minval=2, maxval=30, seed=1), trainable=True)
 
     def call(self, inputs):
 
@@ -34,7 +34,6 @@ class MorletConvRaw(keras.layers.Layer):
         mwin = tf.raw_ops.ExpandDims(input = mwin, axis=1)
         # Convolve.
         output = tf.raw_ops.Conv2D(input = tinput,filter = mwin,strides = [1,1,1,1], padding='VALID')
-        #output = tf.raw_ops.Transpose(x = output,perm=[0,1,3,2])
 
         return output
 
