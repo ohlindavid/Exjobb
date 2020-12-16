@@ -16,23 +16,22 @@ import datetime
 who = "David"
 def path():
     if who=="Oskar":
-        return "C:/Users/Oskar/Documents/GitHub/exjobb/Testing Sets/Albin&Damir/AD_data_set_subject_6/augmented_data/"
+        return "C:/Users/Oskar/Documents/GitHub/exjobb/Testing Sets/Albin&Damir/AD_data_set_subject_2/"
     if who=="David":
-        return "C:/Users/david/Documents/GitHub/exjobb/Testing Sets/Albin&Damir/AD_data_set_subject_6/"
+        return "C:/Users/david/Documents/GitHub/exjobb/Testing Sets/Albin&Damir/AD_data_set_subject_2/"
 def pathPred():
     if who=="Oskar":
-        return "C:/Users/Oskar/Documents/GitHub/exjobb/Testing Sets/Albin&Damir/AD_data_set_subject_7/"
+        return "C:/Users/Oskar/Documents/GitHub/exjobb/Testing Sets/Albin&Damir/AD_data_set_subject_2/"
     if who=="David":
-        return "C:/Users/david/Documents/GitHub/exjobb/Testing Sets/Albin&Damir/AD_data_set_subject_6/"
+        return "C:/Users/david/Documents/GitHub/exjobb/Testing Sets/Albin&Damir/AD_data_set_subject_2/"
 
-nchan = 3 #Antal kanaler
+nchan = 31 #Antal kanaler
 L = 2049 #EEG-längd per epok innan TF-analys
 Fs = 512
 
 labels = np.zeros((1,60),dtype=int)
 labels2 = np.ones((1,60),dtype=int)
-labels3 = 2*np.ones((1,60),dtype=int)
-labels = np.append(np.append(labels,labels2),labels3)
+labels = np.append(labels,labels2)
 names = os.listdir(path())
 labelsnames = np.concatenate([[names],[labels]],0)
 labelsnames = np.transpose(labelsnames)
