@@ -13,7 +13,3 @@ b_init_min = 2
 b_init_max = 30
 train_a = True
 train_b = True
-
-#Pooling
-poolSize = (1,71)
-poolStrides = (1,15)
