@@ -15,7 +15,7 @@ import datetime
 
 def path():
     if who=="Oskar":
-        return "C:/Users/Oskar/Documents/GitHub/exjobb/Testing Sets/Albin&Damir/AD_data_set_subject_6/augmented_data/"
+        return "C:/Users/Oskar/Documents/GitHub/exjobb/Testing Sets/Albin&Damir/AD_data_set_subject_20/"
     if who=="David":
         return "C:/Users/david/Documents/GitHub/exjobb/Testing Sets/Albin&Damir/AD_data_set_subject_6/"
 def pathPred():
@@ -24,8 +24,8 @@ def pathPred():
     if who=="David":
         return "C:/Users/david/Documents/GitHub/exjobb/Testing Sets/Albin&Damir/AD_data_set_subject_6/"
 
-nchan = 3 #Antal kanaler
-L = 2049 #EEG-längd per epok innan TF-analys
+nchan = 31 #Antal kanaler
+L = 1282 #EEG-längd per epok innan TF-analys
 Fs = 512
 
 names = os.listdir(path())
@@ -54,7 +54,7 @@ for i in range(0,k_folds-4):
     val_list_labels = list_labels[i]
     list_labels = np.vstack(np.delete(list_labels,i,0))
     data_generatorVal = signalLoader(nchan,val_list_names,val_list_labels,path())
-    data_generator = signalLoader(nchan,list_names,list_labels,path())
+    data_generator = signalLoader(nchan,list_names,list_labels,path(),data_aug=True)
 
     tensorboard_callback = load_tensorboard(who,date,i)
     model = define_model(nchan,L,Fs)

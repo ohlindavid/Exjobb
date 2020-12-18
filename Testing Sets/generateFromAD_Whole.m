@@ -1,13 +1,13 @@
 time = 4;
 bin_size = 4;
 number_bins = round(time/bin_size);
-v_len = length(Subj02_CleanData_study_FA.trial{1});
+v_len = length(Subj20_CleanData_study_FA.trial{1});
 onset = floor(1.5/4*v_len);
 
-for i=1:60
-    signalA = Subj02_CleanData_study_FA.trial{i}';
-    signalB = Subj02_CleanData_study_LM.trial{i}';
-    signalC = Subj02_CleanData_study_OB.trial{i}';
+for i=1:200
+    signalA = Subj20_CleanData_study_FA.trial{i}';
+    signalB = Subj20_CleanData_study_LM.trial{i}';
+    signalC = Subj20_CleanData_study_OB.trial{i}';
     for j=0:number_bins-1
         low_index = j*floor(v_len/number_bins)+1;
         high_index = (j+1)*floor(v_len/number_bins);
@@ -18,18 +18,18 @@ for i=1:60
         sig_2_write_A = signalA(onset:high_index,:);
         sig_2_write_B = signalB(onset:high_index,:);
         sig_2_write_C = signalC(onset:high_index,:);
-        csvwrite('C:\Users\Oskar\Documents\GitHub\exjobb\Testing Sets\Albin&Damir\AD_data_set_subject_2\A' + string(i),sig_2_write_A);
-        csvwrite('C:\Users\Oskar\Documents\GitHub\exjobb\Testing Sets\Albin&Damir\AD_data_set_subject_2\B' + string(i),sig_2_write_B);
-        csvwrite('C:\Users\Oskar\Documents\GitHub\exjobb\Testing Sets\Albin&Damir\AD_data_set_subject_2\C' + string(i),sig_2_write_C);
+        csvwrite('C:\Users\Oskar\Documents\GitHub\exjobb\Testing Sets\Albin&Damir\AD_data_set_subject_20\A' + string(i),sig_2_write_A);
+        csvwrite('C:\Users\Oskar\Documents\GitHub\exjobb\Testing Sets\Albin&Damir\AD_data_set_subject_20\B' + string(i),sig_2_write_B);
+        csvwrite('C:\Users\Oskar\Documents\GitHub\exjobb\Testing Sets\Albin&Damir\AD_data_set_subject_20\C' + string(i),sig_2_write_C);
     end
 end
-
-v_len = length(Subj02_CleanData_test_FA_lexical.trial{1});
+%%
+v_len = length(Subj20_CleanData_test_FA_lexical.trial{1});
 
 for i=1:28
-    signalA = Subj02_CleanData_test_FA_lexical.trial{i}';
-    signalB = Subj02_CleanData_test_LM_lexical.trial{i}';
-    signalC = Subj02_CleanData_test_OB_lexical.trial{i}';
+    signalA = Subj20_CleanData_test_FA_lexical.trial{i}';
+    signalB = Subj20_CleanData_test_LM_lexical.trial{i}';
+    signalC = Subj20_CleanData_test_OB_lexical.trial{i}';
     for j=0:number_bins-1
         low_index = j*floor(v_len/number_bins)+1;
         high_index = (j+1)*floor(v_len/number_bins);
@@ -40,9 +40,9 @@ for i=1:28
         sig_2_write_A = signalA(onset:high_index,:);
         sig_2_write_B = signalB(onset:high_index,:);
         sig_2_write_C = signalC(onset:high_index,:);
-        csvwrite('C:\Users\Oskar\Documents\GitHub\exjobb\Testing Sets\Albin&Damir\AD_data_set_subject_2_pred\A' + string(i),sig_2_write_A);
-        csvwrite('C:\Users\Oskar\Documents\GitHub\exjobb\Testing Sets\Albin&Damir\AD_data_set_subject_2_pred\B' + string(i),sig_2_write_B);
-        csvwrite('C:\Users\Oskar\Documents\GitHub\exjobb\Testing Sets\Albin&Damir\AD_data_set_subject_2_pred\C' + string(i),sig_2_write_C);
+        csvwrite('C:\Users\Oskar\Documents\GitHub\exjobb\Testing Sets\Albin&Damir\AD_data_set_subject_20_pred\A' + string(i),sig_2_write_A);
+        csvwrite('C:\Users\Oskar\Documents\GitHub\exjobb\Testing Sets\Albin&Damir\AD_data_set_subject_20_pred\B' + string(i),sig_2_write_B);
+        csvwrite('C:\Users\Oskar\Documents\GitHub\exjobb\Testing Sets\Albin&Damir\AD_data_set_subject_20_pred\C' + string(i),sig_2_write_C);
 
     end
 end
