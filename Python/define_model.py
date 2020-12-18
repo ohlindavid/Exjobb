@@ -32,9 +32,9 @@ def define_model(nchan,L,Fs):
     model.add(layers.Flatten())
     model.add(layers.Dense(3, activation='softmax'))
     model.compile(
-        loss=losses.SparseCategoricalCrossentropy(),
+        loss=losses.CategoricalCrossentropy(),
         optimizer=optimizers.Adam(),
-        metrics=['sparse_categorical_accuracy'])
+        metrics=['accuracy'])
     return model
 
 def define_model_R(nchan,L,Fs):

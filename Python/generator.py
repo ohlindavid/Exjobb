@@ -2,15 +2,14 @@ import numpy as np
 
 def signalLoader(nchan,files,labels,path,batch_size=1):
     L = len(files)
-    labels= np.transpose(labels)
     while True:
         batch_start = 0
         batch_end = batch_size
         while batch_start < L:
             limit = min(batch_end, L)
             X = methodToLoad(files[batch_start:limit],path)
-            Y = labels[batch_start:limit]
-            Y = np.vstack(Y)
+            Y = labels[batch_start:limit,:]
+            #Y = np.vstack(Y)
             if (nchan > 1):
                 yield (np.expand_dims(X,axis=0),Y) #a tuple with two numpy arrays with batch_size samples
             else:
