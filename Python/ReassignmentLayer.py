@@ -36,7 +36,7 @@ class ReassignmentSpec(keras.layers.Layer):
         tH = np.arange(-hl/2+1, hl/2+1)*H
 
         #Matrix representations
-        data = tf.pad(input, [hl/2,hl/2])
+        data = tf.pad(inputs, [[0,0],[int(hl/2),int(hl/2)],[0,0]])
         data = tf.tile([data], [rows, 1])
         Hmat = np.zeros((rows, cols))
         dHmat = np.zeros((rows, cols))
