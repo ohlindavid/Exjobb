@@ -6,6 +6,7 @@ settings.py
 
 logs/
 *augmented_data/
+*Albin&Damir/
 
 # C extensions
 *.so
