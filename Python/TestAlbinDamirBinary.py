@@ -38,7 +38,7 @@ for i,name in enumerate(names):
 	if name[0] == 'A':
 		labels.append([1,0])
 	if name[0] == 'B':
-		labels.append([1,0])
+		labels.append([0,1])
 	if name[0] == 'C':
 		labels.append([0,1])
 
@@ -55,8 +55,10 @@ for i in range(0,k_folds-4):
     list_labels = np.array_split(labels,k_folds)
     val_list_labels = list_labels[i]
     list_labels = np.vstack(np.delete(list_labels,i,0))
-    data_generatorVal = signalLoader(nchan,val_list_names,val_list_labels,path())
-    data_generator = signalLoader(nchan,list_names,list_labels,path(),data_aug=False)
+    data_generatorVal = signalLoader(nchan,val_list_names,val_list_labels,path(),data_aug=False,doDownsampling=False)
+    data_generator = signalLoader(nchan,list_names,list_labels,path(),data_aug=True,doDownsampling=False)
+    print(list_names)
+    print(val_list_names)
 
     tensorboard_callback = load_tensorboard(who,date,i)
     model = define_model(nchan,L,Fs)
