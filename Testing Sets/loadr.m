@@ -13,8 +13,8 @@ resize = 1;
 trial = dir;
 
 for k = 3:(length(trial)-2)
-    
-load(trial(k).name) 
+
+load(trial(k).name)
 
 trial(k).name
 
@@ -26,7 +26,7 @@ processed = zeros(nch,nsig,NFFT/(2*resize),len);
 for ch = 1:nch
 
 temp = eval(trial(k).name);
-    
+
 X = decimate(temp(:,ch),4);
 
 candsigvect = [12 16 20 24 28]; % Candidate sigma for the unknown sigma of X
@@ -37,7 +37,7 @@ lambda = 20; % Window parameter
 for i=1:length(candsigvect)
 
 candsig = candsigvect(i)
-    
+
 [SS,MSS,TI,FI,H]=screassignspectrogram1(real(X),lambda,candsig,NFFT,NSTEP,Fs,e);
 
 MSS = imresize(MSS, [ NFFT/(2*resize) 321 ]);
@@ -52,21 +52,21 @@ subplot(121)
 image(SS/200)
 
 % c=[min(min(SS)) max(max(SS))];
-% pcolor(TI,FI,SS)  
+% pcolor(TI,FI,SS)
 % shading interp
 % caxis(c)
 % axis([0 2.5 0 30])
 % ylabel('Frequency (Hz)')
 % xlabel('Time (s)')
 % title('Spectrogram')
-% 
+%
 subplot(122)
 image(MSS/200)
 
 %pause(1)
 
 % c=[min(min(MSS)) max(max(MSS))/100];   % Sometimes I divide the maximum value with some random number for a better view
-% pcolor(TI,FIr,MSS)  
+% pcolor(TI,FIr,MSS)
 % shading interp
 % caxis(c)
 % axis([0 2.5 0 30])

@@ -1,8 +1,8 @@
 function [SS,MSS,TI,FI,H]=screassignspectrogram1(X,lambda,candsig,NFFT,NSTEP,Fs,e);
 
-% SCREASSIGNSPECTROGRAM [SS,MSS,TI,FI,H]=screassignspectrogram(X,lambda,candsig,NFFT,NSTEP,Fs,e); 
+% SCREASSIGNSPECTROGRAM [SS,MSS,TI,FI,H]=screassignspectrogram(X,lambda,candsig,NFFT,NSTEP,Fs,e);
 % computes and plots the windowed spectrogram and the scaled reassigned spectrogram.
-% 
+%
 %
 % Output data
 %
@@ -14,12 +14,12 @@ function [SS,MSS,TI,FI,H]=screassignspectrogram1(X,lambda,candsig,NFFT,NSTEP,Fs,
 %
 % Input data
 %
-% X:    Data sequence 
+% X:    Data sequence
 % lambda:    Parameter of Gaussian window.
 % candsig: Candidate sigma, the assumed scaling factor of the signal
 % NFFT: The number of FFT-samples, default NFFT=2048.
-% NSTEP:The time-step between to spectrum calculations, default NSTEP=1. 
-% Fs:   Sample frequency, default Fs=1 
+% NSTEP:The time-step between to spectrum calculations, default NSTEP=1.
+% Fs:   Sample frequency, default Fs=1
 % e:    Smaller spectrum values than this number are not reassigned, default e=0.
 %
 
@@ -32,13 +32,13 @@ if nargin<7
    e=0;
 end
 if nargin<6
-   Fs=1; 
+   Fs=1;
 end
 if nargin<4
-   NSTEP=1; 
+   NSTEP=1;
 end
 if nargin<4
-   NFFT=2048; 
+   NFFT=2048;
 end
 
 
@@ -95,7 +95,7 @@ FI=[0:NFFT/2-1]'/NFFT*Fs;
 
 % Scaling factors for the scaled Gaussian reassignment
 
-fact=(lambda^2+candsig^2)/(lambda^2);     
+fact=(lambda^2+candsig^2)/(lambda^2);
 fact2=(lambda^2+candsig^2)/(candsig^2);
 
 % Scaled reassignment calculation
@@ -109,7 +109,7 @@ for n=1:length(TI)
             mmat0(m,n)=NFFT/2/pi*fact2*(imag(DFF(m,n).*conj(FF(m,n))./SS(m,n)));
             nmat(m,n)=n+round(nmat0(m,n));
             mmat(m,n)=m-round(mmat0(m,n));
-            if mmat(m,n)>0 & mmat(m,n)<=NFFT/2 & nmat(m,n)>0 & nmat(m,n)<=length(TI) 
+            if mmat(m,n)>0 & mmat(m,n)<=NFFT/2 & nmat(m,n)>0 & nmat(m,n)<=length(TI)
                 MSS(mmat(m,n),nmat(m,n))=MSS(mmat(m,n),nmat(m,n))+SS(m,n);
             else
                 mmat(m,n)=0;
