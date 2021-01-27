@@ -7,7 +7,7 @@ from matplotlib import pyplot as plt
 from settings import a_init, b_init_min, b_init_max, train_a, train_b
 
 class MorletConvRaw(keras.layers.Layer):
-    def __init__(self, input_dim, Fs, input_shape=[75,31,1],etas = 25,wtime = 0.04):
+    def __init__(self, input_dim, Fs, input_shape=[75,31,1],etas = 25,wtime = 0.36):
         super(MorletConvRaw, self).__init__()
         self.nchan = input_dim[1] #Antal kanaler
         self.ttot = input_dim[0] #Tiden per trial

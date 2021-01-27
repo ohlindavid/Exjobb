@@ -8,15 +8,15 @@ import matplotlib.pyplot as plt
 import os,sys
 import tensorflow.keras.backend as K
 from settings import who, epochs, checkpoint_path
-from generator import signalLoader
-from define_model import define_model, load_tensorboard
+from generatorReassignment import signalLoader
+from define_model import define_model_R, load_tensorboard
 import math
 import datetime
 
 
 def path():
     if who=="Oskar":
-        return "C:/Users/Oskar/Documents/GitHub/exjobb/Testing Sets/Albin&Damir/AD_data_set_subject_1_crop/"
+        return "C:/Users/Oskar/Documents/GitHub/exjobb/Testing Sets/Albin&Damir/AD_data_set_subject_1_crop - Reass/"
     if who=="David":
         return "C:/Users/david/Documents/GitHub/exjobb/Testing Sets/Albin&Damir/AD_data_set_subject_6/"
 def pathPred():
@@ -25,11 +25,10 @@ def pathPred():
     if who=="David":
         return "C:/Users/david/Documents/GitHub/exjobb/Testing Sets/Albin&Damir/AD_data_set_subject_6/"
 
-nchan = 31 #Antal kanaler
-L = 1282 #EEG-längd per epok innan TF-analys
-Fs = 512
+nchan = 6 #Antal kanaler
+L = 321 #EEG-längd per epok innan TF-analys
+Fs = 64
 data_aug = False
-doDownsampling = False
 
 names = os.listdir(path())
 #np.random.seed(4)
@@ -37,17 +36,17 @@ np.random.shuffle(names)
 
 labels = []
 for i,name in enumerate(names):
-	if name[0] == 'A':
+	if name[0:2] == 'rA':
 		labels.append([1,0,0])
-	if name[0] == 'B':
+	if name[0:2] == 'rB':
 		labels.append([0,1,0])
-	if name[0] == 'C':
+	if name[0:2] == 'rC':
 		labels.append([0,0,1])
 
-k_folds= 10
+k_folds= 5
 date = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
 
-for i in range(0,k_folds-9):
+for i in range(0,k_folds-4):
     print("Fold number " + str(i+1) + "!")
     length  = len(labels)
     indices = range(0,length)
@@ -72,12 +71,11 @@ for i in range(0,k_folds-9):
     check_point_dir = os.path.dirname(checkpoint_path_fold)
     cp_callback = tensorflow.keras.callbacks.ModelCheckpoint(filepath=checkpoint_path_fold,save_weights_only=True,verbose=1)
 
-    model = define_model(nchan,L,Fs)
+    model = define_model_R(nchan,L,Fs)
 
     # Load weights:
     #model.load_weights("C:/Users/Oskar/Documents/GitHub/Exjobb/logs/model_check_points/20210126-115511/fold1\cp-0020.ckpt")
     #model.trainable = False  # Freeze the outer model
-
 
     history = model.fit(
         data_generator,
