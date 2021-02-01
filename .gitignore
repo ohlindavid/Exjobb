@@ -11,7 +11,7 @@ Testing Sets/AD_data_set_subject_1r
 
 logs/
 *augmented_data/
-*Albin&Damir/
+*sets/
 
 # C extensions
 *.so

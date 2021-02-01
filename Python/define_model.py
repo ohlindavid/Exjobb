@@ -25,18 +25,20 @@ def define_model_bins(nchan,L,Fs):
 def define_model(nchan,L,Fs):
     model = tf.keras.Sequential()
     model.add(layers.InputLayer((L,nchan),batch_size=1))
+    model.add(layers.LayerNormalization())
     model.add(MorletConvRaw([L,nchan],Fs,input_shape=[L,nchan,1],etas=etas,wtime=wtime))
     model.add(layers.Conv2D(filters=filters, kernel_size=[1,nchan], activation='elu'))
-    model.add(layers.Permute((3,1,2)))
+    model.add(layers.Permute((3,1,2), name="second_permute"))
     model.add(layers.AveragePooling2D(pool_size=(1,71), strides=(1,15)))
     model.add(layers.Dropout(0.75))
     model.add(layers.Flatten())
-    model.add(layers.Dense(3, activation='softmax'))
+    model.add(layers.Dense(3))
+    model.add(layers.Activation('softmax'))
     model.compile(
         loss=losses.CategoricalCrossentropy(),
         optimizer=optimizers.Adam(),
-        metrics=['accuracy'],
-        run_eagerly = False)
+        metrics=['Accuracy'],
+        run_eagerly = True)
     return model
 
 def define_model_R(nchan,L,Fs,sigmas):

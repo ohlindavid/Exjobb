@@ -16,7 +16,7 @@ import datetime
 
 def path():
     if who=="Oskar":
-        return "C:/Users/Oskar/Documents/GitHub/exjobb/Testing Sets/Albin&Damir/AD_data_set_subject_1_crop/"
+        return "C:/Users/Oskar/Documents/GitHub/exjobb/Testing Sets/sets/Albin&Damir/AD_data_set_subject_1_crop/"
     if who=="David":
         return "C:/Users/david/Documents/GitHub/exjobb/Testing Sets/Albin&Damir/AD_data_set_subject_6/"
 def pathPred():
@@ -32,7 +32,7 @@ data_aug = False
 doDownsampling = False
 
 names = os.listdir(path())
-#np.random.seed(4)
+#np.random.seed(3)
 np.random.shuffle(names)
 
 labels = []
@@ -44,10 +44,10 @@ for i,name in enumerate(names):
 	if name[0] == 'C':
 		labels.append([0,0,1])
 
-k_folds= 10
+k_folds= 5
 date = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
 
-for i in range(0,k_folds-9):
+for i in range(0,k_folds-4):
     print("Fold number " + str(i+1) + "!")
     length  = len(labels)
     indices = range(0,length)
@@ -75,7 +75,7 @@ for i in range(0,k_folds-9):
     model = define_model(nchan,L,Fs)
 
     # Load weights:
-    #model.load_weights("C:/Users/Oskar/Documents/GitHub/Exjobb/logs/model_check_points/20210126-115511/fold1\cp-0020.ckpt")
+    #model.load_weights("C:/Users/Oskar/Documents/GitHub/Exjobb/logs/model_check_points/20210126-143212/fold1/cp-0005.ckpt")
     #model.trainable = False  # Freeze the outer model
 
 
@@ -85,5 +85,6 @@ for i in range(0,k_folds-9):
         steps_per_epoch=len(list_labels),
         validation_steps=len(val_list_labels),
         epochs=epochs,
-        callbacks=[tensorboard_callback,cp_callback]),
+        callbacks=[tensorboard_callback,cp_callback],
+        verbose=2)
     model.summary()
