@@ -4,7 +4,7 @@ from MorletLayer import MorletConv, MorletConvRaw
 from ReassignmentLayer import ReassignmentSpec
 from tensorflow.keras import layers, optimizers, losses, Input,regularizers
 import datetime
-from settings import etas, filters, wtime, sigmas
+from settings import etas, filters, wtime
 
 def define_model_bins(nchan,L,Fs):
     model = tf.keras.Sequential()
@@ -39,11 +39,11 @@ def define_model(nchan,L,Fs):
         run_eagerly = False)
     return model
 
-def define_model_R(nchan,L,Fs):
+def define_model_R(nchan,L,Fs,sigmas):
     model = tf.keras.Sequential()
     model.add(layers.InputLayer((sigmas, Fs, L, nchan),batch_size=1))
     model.add(layers.BatchNormalization())
-    model.add(layers.Conv3D(filters=6, kernel_size=[sigmas,1,1])) # Channels is channels
+    model.add(layers.Conv3D(filters=5, kernel_size=[sigmas,1,1])) # Channels is channels
     model.add(layers.Permute((4,1,3,2)))
     model.add(layers.Conv3D(filters=25, kernel_size=[nchan,1,1], activation='elu')) # Freq is channels
     model.add(layers.Permute((2,4,1,3)))

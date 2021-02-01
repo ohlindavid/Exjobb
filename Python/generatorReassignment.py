@@ -2,8 +2,8 @@ import numpy as np
 import random
 from scipy.signal import decimate
 
-def signalLoader(nchan,files,labels,path,batch_size=1,data_aug=False,doDownsampling=False):
-    L = len(files)
+def signalLoader(nchan,sigmas,Fs,L,files,labels,path,batch_size=1,data_aug=False,doDownsampling=False):
+    Ln = len(files)
     c = list(zip(files,labels))
     np.random.shuffle(c)
     files, labels = zip(*c)
@@ -12,9 +12,9 @@ def signalLoader(nchan,files,labels,path,batch_size=1,data_aug=False,doDownsampl
     while True:
         batch_start = 0
         batch_end = batch_size
-        while batch_start < L:
-            limit = min(batch_end, L)
-            X = methodToLoad(files[batch_start:limit],path)
+        while batch_start < Ln:
+            limit = min(batch_end, Ln)
+            X = methodToLoad(files[batch_start:limit],path,nchan,sigmas,Fs,L)
             X = np.expand_dims(X,axis=0)
             Y = labels[batch_start:limit,:]
             #print(np.shape(X))
@@ -23,7 +23,7 @@ def signalLoader(nchan,files,labels,path,batch_size=1,data_aug=False,doDownsampl
             batch_start += batch_size
             batch_end += batch_size
 
-def methodToLoad(files,path):
+def methodToLoad(files,path,nchan,sigmas,Fs,L):
     train_0 = []
     aim_folder_path = path
     for imID in files:
@@ -31,6 +31,6 @@ def methodToLoad(files,path):
         train_0.append(np.loadtxt(aim_folder_path+imID,delimiter=','))
         train_0 = np.vstack(train_0)
         # Converts to correct 4-D form.
-        train_0 = np.reshape(train_0,[6,5,64,321])
+        train_0 = np.reshape(train_0,[nchan,sigmas,Fs,L])
         train_0 = np.transpose(train_0,[1,2,3,0])
     return train_0
