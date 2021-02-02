@@ -29,14 +29,14 @@ temp = eval(trial(k).name);
 
 X = decimate(temp(:,ch),4);
 
-candsigvect = [12 16 20 24 28]; % Candidate sigma for the unknown sigma of X
+candsigvect = [12 16 20 24]; % Candidate sigma for the unknown sigma of X
 % Renyivect=zeros(1,length(candsigvect));
 
 lambda = 20; % Window parameter
 
 for i=1:length(candsigvect)
 
-candsig = candsigvect(i)
+candsig = candsigvect(i);
 
 [SS,MSS,TI,FI,H]=screassignspectrogram1(real(X),lambda,candsig,NFFT,NSTEP,Fs,e);
 
@@ -84,24 +84,10 @@ image(MSS/200)
 % title('SRS')
 % xlabel('Frequency (Hz)')
 
-%'Renyi entropy'
-
-%[Renyi]=renyimeas(MSS,[1 2],[5 20],NFFT,NSTEP,Fs)
-
-%Renyivect(i)=Renyi;
-
-% pause
-
-
 end
 
 end
 
-dlmwrite("r" + trial(k).name,processed);
+%dlmwrite("r" + trial(k).name,processed);
 
 end
-
-%figure(3)
-%plot(candsigvect,Renyivect)
-%title('Renyi entropy')
-%xlabel('Candidate sigma')

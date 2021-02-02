@@ -7,7 +7,7 @@ from plots import show_loss, show_accuracy
 import matplotlib.pyplot as plt
 import os,sys
 import tensorflow.keras.backend as K
-from settings import who, epochs, checkpoint_path
+from settings import who, epochs, checkpoint_path, sigmas
 from generatorReassignment import signalLoader
 from define_model import define_model_R, load_tensorboard
 import math
@@ -16,18 +16,18 @@ import datetime
 
 def path():
     if who=="Oskar":
-        return "C:/Users/Oskar/Documents/GitHub/exjobb/Testing Sets/Albin&Damir/AD_data_set_subject_1_crop - Reass/"
+        return "C:/Users/Oskar/Documents/GitHub/exjobb/Testing Sets/AD_data_set_subject_1_crop - Reass/"
     if who=="David":
-        return "C:/Users/david/Documents/GitHub/exjobb/Testing Sets/Albin&Damir/AD_data_set_subject_6/"
+        return "C:/Users/david/Documents/GitHub/exjobb/Testing Sets/AD_data_set_subject_1r/"
 def pathPred():
     if who=="Oskar":
-        return "C:/Users/Oskar/Documents/GitHub/exjobb/Testing Sets/Albin&Damir/AD_data_set_subject_6/"
+        return "C:/Users/Oskar/Documents/GitHub/exjobb/Testing Sets/AD_data_set_subject_6/"
     if who=="David":
-        return "C:/Users/david/Documents/GitHub/exjobb/Testing Sets/Albin&Damir/AD_data_set_subject_6/"
+        return "C:/Users/david/Documents/GitHub/exjobb/Testing Sets/AD_data_set_subject_6/"
 
-nchan = 6 #Antal kanaler
+nchan = 5 #Antal kanaler
 L = 321 #EEG-längd per epok innan TF-analys
-Fs = 64
+Fs = 31
 data_aug = False
 
 names = os.listdir(path())
@@ -62,8 +62,8 @@ for i in range(0,k_folds-4):
 #        list_labels = np.repeat(list_labels,2,axis=0)
 #        list_names = np.repeat(list_names,2)
 
-    data_generatorVal = signalLoader(nchan,val_list_names,val_list_labels,path())
-    data_generator = signalLoader(nchan,list_names,list_labels,path(),data_aug=data_aug)
+    data_generatorVal = signalLoader(nchan,sigmas,Fs,L,val_list_names,val_list_labels,path())
+    data_generator = signalLoader(nchan,sigmas,Fs,L,list_names,list_labels,path(),data_aug=data_aug)
 
     tensorboard_callback = load_tensorboard(who,date,i)
     #es = EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience=2)
@@ -71,11 +71,7 @@ for i in range(0,k_folds-4):
     check_point_dir = os.path.dirname(checkpoint_path_fold)
     cp_callback = tensorflow.keras.callbacks.ModelCheckpoint(filepath=checkpoint_path_fold,save_weights_only=True,verbose=1)
 
-    model = define_model_R(nchan,L,Fs)
-
-    # Load weights:
-    #model.load_weights("C:/Users/Oskar/Documents/GitHub/Exjobb/logs/model_check_points/20210126-115511/fold1\cp-0020.ckpt")
-    #model.trainable = False  # Freeze the outer model
+    model = define_model_R(nchan,L,Fs,sigmas)
 
     history = model.fit(
         data_generator,
