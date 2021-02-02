@@ -80,12 +80,12 @@ def make_gradcam_heatmap(
 
 def path():
     if who=="Oskar":
-        return "C:/Users/Oskar/Documents/GitHub/exjobb/Testing Sets/sets/Albin&Damir/AD_data_set_subject_1_crop/"
+        return "C:/Users/Oskar/Documents/GitHub/exjobb/Testing Sets/sets/Albin&Damir/AD_data_set_subject_1/"
     if who=="David":
         return "C:/Users/david/Documents/GitHub/exjobb/Testing Sets/Albin&Damir/AD_data_set_subject_6/"
 
 nchan = 31 #Antal kanaler
-L = 1282 #EEG-längd per epok innan TF-analys
+L = 2049 #EEG-längd per epok innan TF-analys
 Fs = 512
 data_aug = False
 doDownsampling = False
@@ -101,39 +101,53 @@ for i,name in enumerate(names):
 	if name[0] == 'C':
 		labels.append([0,0,1])
 
-input = signalLoader(nchan,names,labels,path(),data_aug=data_aug)
+k_folds = 8
+i = 0
+length  = len(labels)
+indices = range(0,length)
+list_names = np.array_split(names,k_folds)
+val_list_names = list_names[i]
+list_names = np.hstack(np.delete(list_names, i, 0)).transpose()
+list_labels = np.array_split(labels,k_folds)
+val_list_labels = list_labels[i]
+list_labels = np.vstack(np.delete(list_labels,i,0))
+inputVal = signalLoader(nchan,val_list_names,val_list_labels,path())
+input = signalLoader(nchan,list_names,list_labels,path())
+
 img_size = (L,nchan)
 last_conv_layer_name = "second_permute"
 classifier_layer_names = [
     "average_pooling2d",
     "dropout",
     "flatten",
-    "dense"
-    ]
+    "dense"]
+
+
 # Make model
 model = define_model(nchan,L,Fs)
-model.load_weights("C:/Users/Oskar/Documents/GitHub/Exjobb/logs/model_check_points/20210201-105554/fold1/cp-0029.ckpt")
+model.load_weights("C:/Users/Oskar/Documents/GitHub/Exjobb/logs/model_check_points//gradCAM20210201-163843\cp-0010.ckpt")
 date = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
 checkpoint_path_fold = checkpoint_path + "/gradCAM" + date +  "/cp-{epoch:04d}.ckpt"
 cp_callback =     tf.keras.callbacks.ModelCheckpoint(filepath=checkpoint_path_fold,save_weights_only=True,verbose=1)
-tensorboard_callback = load_tensorboard(who,date,i)
-
+tensorboard_callback = load_tensorboard(who,date,1)
 #history = model.fit(
 #    input,
 #    steps_per_epoch=len(names),
-#    epochs=1,
+#    epochs=10,
 #    verbose=2,
 #    callbacks=[tensorboard_callback,cp_callback])
 
-heatmap_mean= np.zeros([1,1099])
+
+
+
+heatmap_mean= np.zeros([1,1866])
 for i in range(0,150):
     j = 0
     while (True):
-        im = next(input)
+        im = next(inputVal)
 #        print(names[j])
         # Generate class activation heatmap
         heatmap = make_gradcam_heatmap(im, model, last_conv_layer_name, classifier_layer_names)
-        print(np.sum(np.sum(heatmap)))
         if math.isnan(np.sum(np.sum(heatmap))) != True and np.sum(np.sum(heatmap)) != 0:
             break
         j = j + 1

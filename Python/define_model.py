@@ -29,7 +29,7 @@ def define_model(nchan,L,Fs):
     model.add(MorletConvRaw([L,nchan],Fs,input_shape=[L,nchan,1],etas=etas,wtime=wtime))
     model.add(layers.Conv2D(filters=filters, kernel_size=[1,nchan], activation='elu'))
     model.add(layers.Permute((3,1,2), name="second_permute"))
-    model.add(layers.AveragePooling2D(pool_size=(1,71), strides=(1,15)))
+    model.add(layers.AveragePooling2D(pool_size=(1,71), strides=(1,50)))
     model.add(layers.Dropout(0.75))
     model.add(layers.Flatten())
     model.add(layers.Dense(3))

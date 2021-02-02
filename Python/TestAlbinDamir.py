@@ -16,7 +16,7 @@ import datetime
 
 def path():
     if who=="Oskar":
-        return "C:/Users/Oskar/Documents/GitHub/exjobb/Testing Sets/sets/Albin&Damir/AD_data_set_subject_1_crop/"
+        return "C:/Users/Oskar/Documents/GitHub/exjobb/Testing Sets/sets/Albin&Damir/AD_data_set_subject_1/"
     if who=="David":
         return "C:/Users/david/Documents/GitHub/exjobb/Testing Sets/Albin&Damir/AD_data_set_subject_6/"
 def pathPred():
@@ -26,11 +26,11 @@ def pathPred():
         return "C:/Users/david/Documents/GitHub/exjobb/Testing Sets/Albin&Damir/AD_data_set_subject_6/"
 
 nchan = 31 #Antal kanaler
-L = 1282 #EEG-längd per epok innan TF-analys
+L = 2049 #EEG-längd per epok innan TF-analys
 Fs = 512
 data_aug = False
 doDownsampling = False
-
+print(tensorflow.executing_eagerly)
 names = os.listdir(path())
 #np.random.seed(3)
 np.random.shuffle(names)
@@ -44,10 +44,10 @@ for i,name in enumerate(names):
 	if name[0] == 'C':
 		labels.append([0,0,1])
 
-k_folds= 5
+k_folds= 10
 date = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
 
-for i in range(0,k_folds-4):
+for i in range(0,k_folds-9):
     print("Fold number " + str(i+1) + "!")
     length  = len(labels)
     indices = range(0,length)
