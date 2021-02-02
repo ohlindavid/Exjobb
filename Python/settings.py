@@ -5,7 +5,7 @@ who = "Oskar"
 checkpoint_path = "C:/Users/Oskar/Documents/GitHub/Exjobb/logs/model_check_points/"
 
 #Run
-epochs = 100
+epochs = 30
 
 
 #Morlet
