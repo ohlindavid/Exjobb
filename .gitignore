@@ -3,7 +3,9 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+*Python/settings.py
 *settings.py
+
 Testing Sets/AD_data_set_subject_1
 Testing Sets/AD_data_set_subject_1r
 Testing Sets/retrieval

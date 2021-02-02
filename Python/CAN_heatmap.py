@@ -45,14 +45,21 @@ def make_gradcam_heatmap(
         # Compute class predictions
         preds = classifier_model(last_conv_layer_output)
         top_pred_index = tf.argmax(preds[0])
-
+        #print(top_pred_index.numpy())
+        #print(np.where(real_pred == 1))
+        #if (top_pred_index.numpy() != np.where(real_pred == 1)[0]) :
+        #    return np.zeros([25,1099])/0
+        #print(preds[:, top_pred_index].numpy())
         top_class_channel = preds[:, top_pred_index]
+        #print(top_class_channel)
+        #print(real_pred)
+
     # This is the gradient of the top predicted class with regard to
     # the output feature map of the last conv layer
         grads = tape.gradient(top_class_channel, last_conv_layer_output)
-        print(top_pred_index.numpy())
-        if top_pred_index.numpy() != 2:
-            return np.zeros([25,1099])/0
+        #print(top_class_channel)
+        #print(last_conv_layer_output)
+        print(grads)
     # This is a vector where each entry is the mean intensity of the gradient
     # over a specific feature map channel
         pooled_grads = tf.reduce_mean(grads, axis=(0, 1, 2))
@@ -73,12 +80,12 @@ def make_gradcam_heatmap(
 
 def path():
     if who=="Oskar":
-        return "C:/Users/Oskar/Documents/GitHub/exjobb/Testing Sets/sets/Albin&Damir/AD_pretraining_pool/"
+        return "C:/Users/Oskar/Documents/GitHub/exjobb/Testing Sets/sets/Albin&Damir/AD_pretraining_pool_crop/"
     if who=="David":
         return "C:/Users/david/Documents/GitHub/exjobb/Testing Sets/Albin&Damir/AD_data_set_subject_6/"
 
 nchan = 31 #Antal kanaler
-L = 2049 #EEG-längd per epok innan TF-analys
+L = 1282 #EEG-längd per epok innan TF-analys
 Fs = 512
 data_aug = False
 doDownsampling = False
@@ -115,23 +122,22 @@ classifier_layer_names = [
     "flatten",
     "dense"]
 
-
 # Make model
 model = define_model(nchan,L,Fs)
-#model.load_weights("C:/Users/Oskar/Documents/GitHub/Exjobb/logs/model_check_points/gradCAM20210202-120545\cp-0004.ckpt")
+model.load_weights("C:/Users/Oskar/Documents/GitHub/Exjobb/logs/model_check_points/20210202-132146/fold1/cp-0011.ckpt")
 date = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
 checkpoint_path_fold = checkpoint_path + "/gradCAM" + date +  "/cp-{epoch:04d}.ckpt"
 cp_callback =     tf.keras.callbacks.ModelCheckpoint(filepath=checkpoint_path_fold,save_weights_only=True,verbose=1)
 tensorboard_callback = load_tensorboard(who,date,1)
-history = model.fit(
-    input,
-    steps_per_epoch=len(names),
-    epochs=5,
-    verbose=2,
-    callbacks=[tensorboard_callback,cp_callback])
+#history = model.fit(
+#    input,
+#    steps_per_epoch=len(names),
+#    epochs=10,
+#    verbose=2,
+#    callbacks=[tensorboard_callback,cp_callback])
 
 heatmap_mean= np.zeros([1,1099])
-for i in range(0,50):
+for i in range(0,150):
     j = 0
     while (True):
         im = next(inputVal)
@@ -145,11 +151,10 @@ for i in range(0,50):
     heatmap_mean = heatmap_mean + heatmap
     A = np.tile(heatmap, [200,1])
     B = np.tile(im[0],[1,1])
-    print("SUCCESS: " + str(i))
     #plt.matshow(A)
     #plt.show()
 #        plt.matshow(B[0,:,:].T)
 #        plt.show()
 heatmap_mean = np.tile(heatmap_mean, [200,1])
-plt.matshow(heatmap_mean/150)
+plt.matshow(heatmap_mean)
 plt.show()
