@@ -37,8 +37,8 @@ def define_model(nchan,L,Fs):
     model.compile(
         loss=losses.CategoricalCrossentropy(),
         optimizer=optimizers.Adam(),
-        metrics=['Accuracy'],
-        run_eagerly = True)
+        metrics=['accuracy'],
+        run_eagerly = False)
     return model
 
 def define_model_R(nchan,L,Fs,sigmas):
@@ -56,7 +56,8 @@ def define_model_R(nchan,L,Fs,sigmas):
     model.compile(
         loss=losses.CategoricalCrossentropy(),
         optimizer=optimizers.Adam(),
-        metrics=['accuracy'])
+        metrics=['accuracy'],
+        run_eagerly = False)
     return model
 
 #def define_base_CNN(nchan,L,Fs):

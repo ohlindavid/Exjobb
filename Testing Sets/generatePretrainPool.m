@@ -1,6 +1,6 @@
 % Prepared pretraining for a network eventually for subject 6.
 list = who;
-do = contains(list,"study");
+do = contains(list,"test");
 sample_length = 100000;
 for i=1:length(list)
     subj = list{i};
@@ -18,15 +18,15 @@ for i=1:length(list)
     for j = 1:length(eval(subj).trial)
         if (mod(i,3)==1) 
             sig = eval(subj).trial{j}';
-            csvwrite('C:\Users\Oskar\Documents\GitHub\exjobb\Testing Sets\sets\Albin&Damir\AD_pretraining_pool_crop\A' + string(floor(i/3)+1) + "A" + string(j) ,sig(onset:end,:));
+            csvwrite('C:\Users\david\Documents\GitHub\exjobb\Testing Sets\AD_retrieval_transfer_crop\A' + string(subj) + "A" + string(j) ,sig(onset:end,:));
         end
         if (mod(i,3)==2) 
             sig = eval(subj).trial{j}';
-            csvwrite('C:\Users\Oskar\Documents\GitHub\exjobb\Testing Sets\sets\Albin&Damir\AD_pretraining_pool_crop\B' + string(floor(i/3)+1) + "B" + string(j) ,sig(onset:end,:));
+            csvwrite('C:\Users\david\Documents\GitHub\exjobb\Testing Sets\AD_retrieval_transfer_crop\B' + string(subj) + "B" + string(j) ,sig(onset:end,:));
         end
         if (mod(i,3)==0) 
             sig = eval(subj).trial{j}';
-            csvwrite('C:\Users\Oskar\Documents\GitHub\exjobb\Testing Sets\sets\Albin&Damir\AD_pretraining_pool_crop\C' + string(floor(i/3)+1) + "C" + string(j) ,sig(onset:end,:));
+            csvwrite('C:\Users\david\Documents\GitHub\exjobb\Testing Sets\AD_retrieval_transfer_crop\C' + string(subj) + "C" + string(j) ,sig(onset:end,:));
         end
     end
 end
