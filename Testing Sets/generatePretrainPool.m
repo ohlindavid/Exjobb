@@ -18,6 +18,7 @@ for i=1:length(list)
     for j = 1:length(eval(subj).trial)
         if (mod(i,3)==1) 
             sig = eval(subj).trial{j}';
+<<<<<<< Updated upstream
             csvwrite('C:\Users\david\Documents\GitHub\exjobb\Testing Sets\AD_retrieval_transfer_crop\A' + string(subj) + "A" + string(j) ,sig(onset:end,:));
         end
         if (mod(i,3)==2) 
@@ -27,6 +28,17 @@ for i=1:length(list)
         if (mod(i,3)==0) 
             sig = eval(subj).trial{j}';
             csvwrite('C:\Users\david\Documents\GitHub\exjobb\Testing Sets\AD_retrieval_transfer_crop\C' + string(subj) + "C" + string(j) ,sig(onset:end,:));
+=======
+            csvwrite('C:\Users\Oskar\Documents\GitHub\exjobb\Testing Sets\sets\Albin&Damir\AD_pretraining_pool_crop_test\A' + string(subj) + "A" + string(j) ,sig(onset:end,:));
+        end
+        if (mod(i,3)==2) 
+            sig = eval(subj).trial{j}';
+            csvwrite('C:\Users\Oskar\Documents\GitHub\exjobb\Testing Sets\sets\Albin&Damir\AD_pretraining_pool_crop_test\B' + string(subj) + "B" + string(j) ,sig(onset:end,:));
+        end
+        if (mod(i,3)==0) 
+            sig = eval(subj).trial{j}';
+            csvwrite('C:\Users\Oskar\Documents\GitHub\exjobb\Testing Sets\sets\Albin&Damir\AD_pretraining_pool_crop_test\C' + string(subj) + "C" + string(j) ,sig(onset:end,:));
+>>>>>>> Stashed changes
         end
     end
 end

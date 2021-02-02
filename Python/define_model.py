@@ -29,7 +29,7 @@ def define_model(nchan,L,Fs):
     model.add(MorletConvRaw([L,nchan],Fs,input_shape=[L,nchan,1],etas=etas,wtime=wtime))
     model.add(layers.Conv2D(filters=filters, kernel_size=[1,nchan], activation='elu'))
     model.add(layers.Permute((3,1,2), name="second_permute"))
-    model.add(layers.AveragePooling2D(pool_size=(1,71), strides=(1,50)))
+    model.add(layers.AveragePooling2D(pool_size=(1,71), strides=(1,15)))
     model.add(layers.Dropout(0.75))
     model.add(layers.Flatten())
     model.add(layers.Dense(3))
@@ -49,7 +49,7 @@ def define_model_R(nchan,L,Fs,sigmas):
     model.add(layers.Permute((4,1,3,2)))
     model.add(layers.Conv3D(filters=25, kernel_size=[nchan,1,1], activation='elu')) # Freq is channels
     model.add(layers.Permute((2,4,1,3)))
-    model.add(layers.AveragePooling3D(pool_size=(1, 10, 1), strides=(1,5,1)))
+    model.add(layers.AveragePooling3D(pool_size=(1, 71, 1), strides=(1,15,1)))
     model.add(layers.Dropout(0.75))
     model.add(layers.Flatten())
     model.add(layers.Dense(3, activation='softmax'))

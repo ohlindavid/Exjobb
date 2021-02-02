@@ -16,7 +16,7 @@ import datetime
 
 def path():
     if who=="Oskar":
-        return "C:/Users/Oskar/Documents/GitHub/exjobb/Testing Sets/sets/Albin&Damir/AD_data_set_subject_1/"
+        return "C:/Users/Oskar/Documents/GitHub/exjobb/Testing Sets/sets/Albin&Damir/AD_pretraining_pool_crop/"
     if who=="David":
         return "C:/Users/david/Documents/GitHub/exjobb/Testing Sets/Albin&Damir/AD_data_set_subject_6/"
 def pathPred():
@@ -26,7 +26,7 @@ def pathPred():
         return "C:/Users/david/Documents/GitHub/exjobb/Testing Sets/Albin&Damir/AD_data_set_subject_6/"
 
 nchan = 31 #Antal kanaler
-L = 2049 #EEG-längd per epok innan TF-analys
+L = 1282 #EEG-längd per epok innan TF-analys
 Fs = 512
 data_aug = False
 doDownsampling = False
