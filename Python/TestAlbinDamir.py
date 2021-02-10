@@ -18,7 +18,7 @@ def path():
     if who=="Oskar":
         return "C:/Users/Oskar/Documents/GitHub/exjobb/Testing Sets/sets/Albin&Damir/AD_pretraining_pool_crop/"
     if who=="David":
-        return "C:/Users/david/Documents/GitHub/exjobb/Testing Sets/Albin&Damir/AD_data_set_subject_6/"
+        return "C:/Users/david/Documents/GitHub/exjobb/Testing Sets/AD_retrieval_transfer_crop_subject_1/"
 def pathPred():
     if who=="Oskar":
         return "C:/Users/Oskar/Documents/GitHub/exjobb/Testing Sets/Albin&Damir/AD_data_set_subject_6/"

@@ -8,8 +8,7 @@ e=0;
 
 % [X,T]=multigaussdata1(1024,[30],[1],[1.5],[12],[pi],Fs);
 
-candsigvect = [ 18 ]
-% candsigvect=[10:2:40]; % Candidate sigma for the unknown sigma of X
+candsigvect=[10:2:40]; % Candidate sigma for the unknown sigma of X
 Renyivect=zeros(1,length(candsigvect));
 figure
 
@@ -17,11 +16,15 @@ plot(T,real(X))
 
 lambda=20 % Window parameter
 
+MSSs = zeros(15,1024,1024);
+
 % for i = 1:1
 for i=1:length(candsigvect)
 
 candsig=candsigvect(i)
     
+pause
+
 [SS,MSS,TI,FI,H]=screassignspectrogram1(real(X),lambda,candsig,NFFT,NSTEP,Fs,e);
 
 figure(1)
@@ -50,16 +53,16 @@ axis([0 4 0 30])
 ylabel('Frequency (Hz)')
 xlabel('Time (s)')
 title('Scaled reassigned spectrogram')
-
-figure(2)
-subplot(121)
-plot(TI,MSS)
-title('SRS')
-xlabel('Time (s)')
-subplot(122)
-plot(FI,MSS')
-title('SRS')
-xlabel('Frequency (Hz)')
+% 
+% figure(2)
+% subplot(121)
+% plot(TI,MSS)
+% title('SRS')
+% xlabel('Time (s)')
+% subplot(122)
+% plot(FI,MSS')
+% title('SRS')
+% xlabel('Frequency (Hz)')
 
 'Renyi entropy'
 
@@ -67,9 +70,7 @@ xlabel('Frequency (Hz)')
 
 Renyivect(i)=Renyi;
 
-% pause
-
-
+MSSs(i,:,:) = MSS;
 end
 
 figure(3)

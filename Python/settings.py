@@ -5,8 +5,7 @@ who = "David"
 checkpoint_path = "C:/Users/David/Documents/GitHub/Exjobb/logs/model_check_points/"
 
 #Run
-epochs = 20
-
+epochs = 50
 
 #Morlet
 etas = 25
@@ -19,4 +18,4 @@ train_a = True
 train_b = True
 
 #Reassignment
-sigmas = 3
+sigmas = 1

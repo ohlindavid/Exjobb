@@ -52,7 +52,7 @@ for subj in subjects:
 			labels.append([0,0,1])
 			names.append(name)
 
-	print(len(names))
+	print("Subject " + subj)
 
 	k_folds= 5
 	date = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
