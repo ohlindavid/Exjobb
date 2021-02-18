@@ -1,16 +1,17 @@
 clear;
 close all;
 clc;
-E = 2;
+E = 3;
 time = 4;
 Fs = 1024/2;
 N = 512;
 M = N/2;
 noreal = 10;
-folder = "C:\Users\Oskar\Documents\GitHub\exjobb\Testing Sets\Simulated\5comp_1ch\";
-folder_noise= "C:\Users\Oskar\Documents\GitHub\exjobb\Testing Sets\Simulated\5comp_1ch_noise\";
+folder = "C:\Users\david\Documents\GitHub\exjobb\Testing Sets\Simulated\5comp_1ch\";
+folder_noise= "C:\Users\david\Documents\GitHub\exjobb\Testing Sets\Simulated\snr2\";
 
-for j=1:60
+
+for j=1:80
 
     % Placeholder matrix where element (i,j) notes the distance matrix between
     % channel i and j. 
@@ -51,22 +52,28 @@ for j=1:60
     tot_noise = w_noise(1)*alpha_noise + w_noise(2)*measurement_noise + w_noise(3)*oof_noise;
    
    for  i=1:1
-    [X,T] = multigaussdata(N,[100 100 300 512 10^7],[0.5 0.5 1 1 1],[0.7 0.1 0.4 0.5 0],[6 6 12 17 1],[0 0.05 0 0 0],Fs);
-    [X2,T2] = multigaussdata(N,[100 100 300 512 10^7],[0.5 0.5 1 1 1],[0.7 0.1 0.4 0.5 0],[6 6 8 17 1],[0 0.05 0 0 0],Fs);
+    [X,T] = multigaussdata(N,[250],[0.4],[0.4],[8],[0],Fs);
+    [X2,T2] = multigaussdata(N,[250],[0.4],[0.7],[8],[0],Fs);
+    [X3,T3] = multigaussdata(N,[250],[0.4],[0.4],[12],[0],Fs);
     Ain = X;
     Bin = X2;
+    Cin = X3;
    end
    
-   SNR=1.1;
-   lambda=10^(SNR/10);
-   lambda2 = 10^(SNR/10);
+   lambda=2;
+   lambda2 = lambda;
    Aout(:,1) = sqrt(lambda/(lambda+1)).*Ain./norm(Ain)+1/sqrt(lambda+1)*tot_noise(:,1)/norm(tot_noise(:,1));
    Bout(:,1) = sqrt(lambda2/(lambda2+1)).*Bin./norm(Bin)+1/sqrt(lambda2+1)*tot_noise(:,2)/norm(tot_noise(:,2));
-   csvwrite(folder + 'A' + string(j),Ain);
-   csvwrite(folder + 'B' + string(j),Bin);
+   Cout(:,1) = sqrt(lambda2/(lambda2+1)).*Cin./norm(Cin)+1/sqrt(lambda2+1)*tot_noise(:,3)/norm(tot_noise(:,3));
+   
+    plot(Aout)
+    hold on;
+    plot(Bout)
+    plot(Cout)
+    
+   %csvwrite(folder + 'A' + string(j),Ain);
+   %csvwrite(folder + 'B' + string(j),Bin);
    csvwrite(folder_noise + 'A' + string(j),Aout);
    csvwrite(folder_noise + 'B' + string(j),Bout);
+   csvwrite(folder_noise + 'C' + string(j),Cout);
 end
-plot(Aout)
-hold on;
-plot(Bout)
