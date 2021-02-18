@@ -25,12 +25,8 @@ def define_model_bins(nchan,L,Fs):
 def define_model(nchan,L,Fs):
     model = tf.keras.Sequential()
     model.add(layers.InputLayer((L,nchan),batch_size=1))
-<<<<<<< HEAD
-=======
-    model.add(layers.LayerNormalization(axis=[1]))
->>>>>>> c0b93bf47457b69119db9d84980cbfc48db7acb9
+    model.add(layers.LayerNormalization(axis=[1,2], center=False, scale=False))
     model.add(MorletConvRaw([L,nchan],Fs,input_shape=[L,nchan,1],etas=etas,wtime=wtime))
-    model.add(layers.LayerNormalization())
     model.add(layers.Conv2D(filters=filters, kernel_size=[1,nchan], activation='elu'))
     model.add(layers.Permute((3,1,2), name="second_permute"))
     model.add(layers.AveragePooling2D(pool_size=(1,71), strides=(1,15),name="pooling"))
@@ -65,15 +61,18 @@ def define_model_R(nchan,L,Fs,sigmas):
         run_eagerly = False)
     return model
 
-def define_model_R2(nchan,L,Fs):
+def define_model_R3(nchan,L,Fs):
     model = tf.keras.Sequential()
     model.add(layers.InputLayer((Fs, L, nchan),batch_size=1))
-    model.add(layers.LayerNormalization())
-    model.add(layers.Conv2D(filters=5, kernel_size=[4,4], activation='elu'))
-    model.add(layers.AveragePooling2D(pool_size=(2, 3), strides=(1,2)))
-    model.add(layers.Dropout(0.75))
+    #model.add(layers.LayerNormalization())
+    model.add(layers.Conv2D(filters=8, kernel_size=[4,4], activation='elu'))
+    #model.add(layers.AveragePooling2D(pool_size=(2, 2)))
+    model.add(layers.Conv2D(filters=4, kernel_size=[3,3], activation='elu'))
+    #model.add(layers.AveragePooling2D(pool_size=(2, 2)))
+    model.add(layers.Dropout(0.6))
     model.add(layers.Flatten())
     model.add(layers.Dense(16, activation='elu'))
+    model.add(layers.Dense(8, activation='elu'))
     model.add(layers.Dense(3, activation='softmax'))
     model.compile(
         loss=losses.CategoricalCrossentropy(),
@@ -82,28 +81,24 @@ def define_model_R2(nchan,L,Fs):
         run_eagerly = False)
     return model
 
-def define_model_R3(nchan,L,Fs):
+def define_model_R2(nchan,L,Fs):
     model = tf.keras.Sequential()
     model.add(layers.InputLayer((Fs, L, nchan),batch_size=1))
-    model.add(layers.LayerNormalization())
-    model.add(layers.Conv2D(filters=4, kernel_size=[8,8], activation='elu'))
-    model.add(layers.AveragePooling2D(pool_size=(2, 4), strides=(1,1)))
-    model.add(layers.Dropout(0.3))
-    model.add(layers.Conv2D(filters=8, kernel_size=[4,6], activation='elu'))
-    model.add(layers.AveragePooling2D(pool_size=(2, 4), strides=(2,2)))
-    model.add(layers.Dropout(0.4))
-    model.add(layers.Conv2D(filters=8, kernel_size=[4,6], activation='elu'))
-    model.add(layers.AveragePooling2D(pool_size=(2, 2), strides=(2,2)))
-    model.add(layers.Dropout(0.4))
+    #model.add(layers.LayerNormalization())
+    model.add(layers.Conv2D(filters=8, kernel_size=[5,5], activation='elu'))
+    #model.add(layers.AveragePooling2D(pool_size=(2, 2)))
+    model.add(layers.Dropout(0.5))
     model.add(layers.Flatten())
+    model.add(layers.Dense(32, activation='elu'))
     model.add(layers.Dense(16, activation='elu'))
     model.add(layers.Dense(3, activation='softmax'))
     model.compile(
         loss=losses.CategoricalCrossentropy(),
-        optimizer=optimizers.Adam(),
+        optimizer=optimizers.Adam(learning_rate=0.0001),
         metrics=['accuracy'],
         run_eagerly = False)
     return model
+
 
 def load_tensorboard(who,date,fold):
     if (who=="Oskar"):

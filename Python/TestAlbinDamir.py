@@ -78,6 +78,7 @@ for i in range(0,k_folds-9):
     #model.load_weights("C:/Users/Oskar/Documents/GitHub/Exjobb/logs/model_check_points/20210126-143212/fold1/cp-0005.ckpt")
     #model.trainable = False  # Freeze the outer model
 
+    model.summary()
 
     history = model.fit(
         data_generator,
@@ -86,5 +87,4 @@ for i in range(0,k_folds-9):
         validation_steps=len(val_list_labels),
         epochs=epochs,
         callbacks=[tensorboard_callback,cp_callback],
-        verbose=2)
-    model.summary()
+        verbose=1)

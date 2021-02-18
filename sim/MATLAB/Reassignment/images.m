@@ -14,3 +14,21 @@ hold on
 
 plot(morlet1(T));
 plot(morlet2(T));
+
+%%
+
+%Equation of Love, 2021-02-10%L=Anna's Love for David
+%t=time from 2020-01-25 in seconds
+%(1000*exp(t)) is the increase of love with respect to time t
+%(abs(f)) is the love given to David at each timestep t
+%f=David mood factor, -100= extremely sad, 100=extremely happy, at a 
+%certain time t
+%f=(-100:100);    
+%Side note: one can plot the mood with respect to time, but this would     
+%require measurements from advanced technology
+%L=(1000*exp(t))-(abs(f)))
+%where t->infinity
+%Example:
+t=33264000; %in seconds, approx 1 year and 20 days
+f=-5; %translates to a little sad/worried, perhaps about future
+L=(1000*exp(t))-(abs(f))

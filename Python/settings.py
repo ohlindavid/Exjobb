@@ -2,7 +2,7 @@
 who = "David"
 
 # Checkpoint saves folder
-checkpoint_path = "C:/Users/David/Documents/GitHub/Exjobb/logs/model_check_points/"
+checkpoint_path = "C:/Users/david/Documents/GitHub/Exjobb/logs/model_check_points/"
 
 #Run
 epochs = 50
@@ -19,3 +19,13 @@ train_b = True
 
 #Reassignment
 sigmas = 1
+imax = 1000
+Fs0 = 64
+Fmin = 2
+Fmax = 30
+L0 = 64
+Lmin = 24
+Lmax = 48
+
+#Augmentation
+#cap = [ 1 3 5 2 4 6 ] #TEST
